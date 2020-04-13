@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Wc Mpesa Payment Gateway
+Plugin Name: M-Pesa Payment Gateway for WooCommerce
 Plugin URI: http://turbohost.co.mz/wo-mpesa-payment-gateway/
 Description: MPESA Payment Gateway.
 Version: 1.0
@@ -16,31 +16,47 @@ Author URI: http://turbohost.co.mz/
     License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
-add_action('plugins_loaded', 'woocommerce_gateway_mpesa_init', 0);
-add_action( 'init',  'start_session', 1);
-register_activation_hook(__FILE__, 'woocommerce_gateway_mpesa_install');
-function  woocommerce_gateway_mpesa_install()
+define('WC_MPESA_DATABASE_VERSION', 1.0);
+add_action('plugins_loaded', 'wc_mpesa_init', 0);
+add_action('plugins_loaded', 'wc_mpesa_update_check');
+add_action('init',  'wc_mpesa_start_session', 1);
+register_activation_hook(__FILE__, 'wc_mpesa_install');
+function  wc_mpesa_install()
 {
     global $wpdb;
     $table_name = $wpdb->prefix . "wc_mpesa_transactions";
+    
+    if(!get_option( 'wc_mpesa_version', WC_MPESA_DATABASE_VERSION )){
 
-    $charset_collate = $wpdb->get_charset_collate();
-    $sql = "CREATE TABLE $table_name (
-    id bigint(9) NOT NULL AUTO_INCREMENT,
-    order_id bigint(20) NOT NULL,
-    phone bigint(12) NOT NULL,
-    reference_id varchar(10) NOT NULL,
-    result_code varchar(50) NULL,
-    date_created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    status varchar(20) NULL,
-    PRIMARY KEY  (id)
-) $charset_collate;";
 
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql);
+
+        $charset_collate = $wpdb->get_charset_collate();
+        $sql = "CREATE TABLE $table_name (
+        id bigint(9) NOT NULL AUTO_INCREMENT,
+        order_id bigint(20) NOT NULL,
+        phone bigint(12) NOT NULL,
+        reference_id varchar(10) NOT NULL,
+        result_code varchar(50) NULL,
+        date_created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        status varchar(20) NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+    
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
+
+        update_option( 'wc_mpesa_version', WC_MPESA_DATABASE_VERSION );
+    }
+
 }
 
-function start_session()
+function wc_mpesa_update_check(){
+    if (WC_MPESA_DATABASE_VERSION != get_option('wc_mpesa_version')) {
+        wc_mpesa_install();
+    }
+}
+
+function wc_mpesa_start_session()
 {
     if (!session_id()) {
         session_start();
@@ -48,14 +64,14 @@ function start_session()
 }
 
 
-function woocommerce_gateway_mpesa_init()
+function wc_mpesa_init()
 {
     require 'vendor/autoload.php';
     if (!class_exists('WC_Payment_Gateway')) return;
     /**
      * Localisation
      */
-    load_plugin_textdomain('wc-mpesa-payment-gateway', false, dirname(plugin_basename(__FILE__)) . '/languages');
+    load_plugin_textdomain('wc-mpesa', false, dirname(plugin_basename(__FILE__)) . '/languages');
 
 
     /**
@@ -68,11 +84,11 @@ function woocommerce_gateway_mpesa_init()
         public function __construct()
         {
 
-            $this->id                 = 'wc-mpesa-payment-gateway';
-            $this->icon               = apply_filters('woocommerce_wc-mpesa-payment-gateway_icon', plugins_url('assets/img/mpesa-logo.jpeg', __FILE__));
+            $this->id                 = 'wc-mpesa';
+            $this->icon               = apply_filters('wc-mpesa_icon', plugins_url('assets/img/mpesa-logo.jpeg', __FILE__));
             $this->has_fields         = false;
-            $this->method_title       = __('MPESA Payment Gateway', 'woocommerce');
-            $this->method_description = __('Allow to pay via MPESA', 'wc-mpesa-payment-gateway');
+            $this->method_title       = __('M-PESA Payment Gateway', 'woocommerce');
+            $this->method_description = __('Allow to pay via M-PESA', 'wc-mpesa');
 
             // Load the settings.
             $this->init_form_fields();
@@ -112,7 +128,7 @@ function woocommerce_gateway_mpesa_init()
             if ($this->description) {
                 // you can instructions for test mode, I mean test card numbers etc.
                 if ($this->env) {
-                    $this->description .= '<br/> TEST MODE ENABLED. In test mode, you can use phone number listed in your account.';
+                    $this->description .= '<br/> TEST MODE ENABLED.';
                     $this->description  = trim($this->description);
                 }
                 // display the description with <p> tags etc.
@@ -136,18 +152,18 @@ function woocommerce_gateway_mpesa_init()
         {
             //validate currency
             if ('MZN' != get_woocommerce_currency()) {
-                wc_add_notice(__( 'Currency not supported!', 'wc-mpesa-payment-gateway' ), 'error');
+                wc_add_notice(__('Currency not supported!', 'wc-mpesa'), 'error');
                 return false;
             }
             //validate  phone
             $mpesa_number = filter_input(INPUT_POST, 'mpesa_number', FILTER_VALIDATE_INT);
 
             if (!isset($mpesa_number)) {
-                wc_add_notice(__( 'Phone number is required!', 'wc-mpesa-payment-gateway' ), 'error');
+                wc_add_notice(__('Phone number is required!', 'wc-mpesa'), 'error');
                 return false;
             }
             if (!$mpesa_number || strlen($mpesa_number) != 9 || !preg_match('/^84[0-9]{7}$/', $mpesa_number)) {
-                wc_add_notice(__( 'Phone number is incorrect!', 'wc-mpesa-payment-gateway' ), 'error');
+                wc_add_notice(__('Phone number is incorrect!', 'wc-mpesa'), 'error');
                 return false;
             }
             return true;
@@ -165,43 +181,43 @@ function woocommerce_gateway_mpesa_init()
         {
             $this->form_fields = array(
                 'enabled' => array(
-                    'title' => __('Enable/Disable', 'wc-mpesa-payment-gateway'),
+                    'title' => __('Enable/Disable', 'wc-mpesa'),
                     'type' => 'checkbox',
-                    'label' => __('Enable WooCommerce Mpesa Payment Gateway', 'wc-mpesa-payment-gateway'),
+                    'label' => __('Enable WooCommerce M-pesa Payment Gateway', 'wc-mpesa'),
                     'default' => 'no'
                 ),
                 'title' => array(
-                    'title' => __('Title', 'wc-mpesa-payment-gateway'),
+                    'title' => __('Title', 'wc-mpesa'),
                     'type' => 'text',
-                    'description' => __('This controls the title which the user sees during checkout', 'wc-mpesa-payment-gateway'),
-                    'default' => __('M-PESA Payment Gateway', 'wc-mpesa-payment-gateway'),
+                    'description' => __('This controls the title which the user sees during checkout', 'wc-mpesa'),
+                    'default' => __('M-PESA Payment Gateway', 'wc-mpesa'),
                     'desc_tip'      => true,
                 ),
                 'description' => array(
-                    'title' => __('Customer Message', 'wc-mpesa-payment-gateway'),
+                    'title' => __('Customer Message', 'wc-mpesa'),
                     'type' => 'textarea',
-                    'default' => __('Pay via mpesa', 'wc-mpesa-payment-gateway')
+                    'default' => __('Pay via mpesa', 'wc-mpesa')
                 ),
                 'api_key' => array(
-                    'title' => __('API Key', 'wc-mpesa-payment-gateway'),
+                    'title' => __('API Key', 'wc-mpesa'),
                     'type' => 'text',
-                    'default' => __('', 'wc-mpesa-payment-gateway')
+                    'default' => __('', 'wc-mpesa')
                 ),
                 'public_key' => array(
-                    'title' => __('Public Key', 'wc-mpesa-payment-gateway'),
+                    'title' => __('Public Key', 'wc-mpesa'),
                     'type' => 'textarea',
-                    'default' => __('', 'wc-mpesa-payment-gateway')
+                    'default' => __('', 'wc-mpesa')
                 ),
                 'service_provider' => array(
-                    'title' => __('Service Provider Code', 'wc-mpesa-payment-gateway'),
+                    'title' => __('Service Provider Code', 'wc-mpesa'),
                     'type' => 'text',
-                    'default' => __('', 'wc-mpesa-payment-gateway')
+                    'default' => __('', 'wc-mpesa')
                 ),
                 'env' => array(
-                    'title' => __('Test Mode', 'wc-mpesa-payment-gateway'),
+                    'title' => __('Test Mode', 'wc-mpesa'),
                     'type' => 'checkbox',
-                    'default' => __('no', 'wc-mpesa-payment-gateway'),
-                    'label' => __('Enable Test Environment', 'wc-mpesa-payment-gateway'),
+                    'default' => __('no', 'wc-mpesa'),
+                    'label' => __('Enable Test Environment', 'wc-mpesa'),
                 ),
             );
         }
@@ -222,13 +238,34 @@ function woocommerce_gateway_mpesa_init()
             wp_enqueue_script('vue', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js', [], false, true);
             wp_enqueue_script('axios', 'https://unpkg.com/axios/dist/axios.min.js', array('vue'), false, true);
             wp_enqueue_script('payment', plugin_dir_url(__FILE__) . '/assets/js/payment.js', array('vue', 'axios'), false, true);
+            wp_localize_script('payment', 'payment_text', [
+                'intro'  => [
+                    'title' => __('Payment Information', 'wc-mpesa'),
+                    'description'  =>__('<ul><li>Check your details before pressing the button below.</li><li>Your phone number MUST be registered with MPesa (and Active) for this to work.</li><li>You will receive a pop-up on the phone requesting payment confirmation.</li><li>Enter your service PIN (MPesa) to continue.</li><li>You will receive a confirmation message shortly thereafter</li></ul>', 'wc-mpesa'),
+                ],
+                'requested' => [
+                    'title' => __('Payment request sent!', 'wc-mpesa'),
+                    'description' => __('Check your phone and enter your PIN code to confirm payment ...', 'wc-mpesa')
+                ],
+                'received' => [
+                    'title' => __('Payment received!', 'wc-mpesa'),
+                    'description' => __('Your payment has been received and your order will be processed soon.', 'wc-mpesa')
+                ],
+                'timeout' => [
+                    'title' => __('Payment timeout exceeded!', 'wc-mpesa'),
+                    'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa')
+                ],
+                'failed' => [
+                    'title' => __('Payment failed!', 'wc-mpesa'),
+                    'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa')
+                ]
+            ]);
             wp_enqueue_style('style', plugin_dir_url(__FILE__) . '/assets/css/style.css', false, '1.1', 'all');
         }
 
         function payment_form_html($order_id)
         {
             $order = new WC_Order($order_id);
-            // $order_id = $order->get_id();
             //get transaction using reference_id
             $return_url = $this->get_return_url($order);
             require plugin_dir_path(__FILE__) . '/templates/payment.php';
@@ -275,24 +312,17 @@ function woocommerce_gateway_mpesa_init()
             $mpesa = new \Karson\MpesaPhpSdk\Mpesa();
             $mpesa->setApiKey($this->api_key);
             $mpesa->setPublicKey($this->public_key);
+            $mpesa->setEnv('live');
 
 
-            $order = new WC_Order(filter_input(INPUT_POST, 'order_id',FILTER_VALIDATE_INT));
-            // $reference_id = filter_input(INPUT_POST, 'reference_id',FILTER_VALIDATE_INT);
-            $response['status'] = 'pending';
+            $order = new WC_Order(filter_input(INPUT_POST, 'order_id', FILTER_VALIDATE_INT));
             $order_id = $order->get_id();
-            // $transaction = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}wc_mpesa_transactions WHERE order_id = {$order_id} AND reference_id = {$reference_id}");
-            if ($order_id ) {
-            $amount = $order->get_total();
-            $reference_id = $this->generate_reference_id($order_id);
+            if ($order_id) {
+                $amount = $order->get_total();
+                $reference_id = $this->generate_reference_id($order_id);
                 $phone = $_SESSION['phone'];
                 $result = $mpesa->c2b($order_id, $phone, $amount, $reference_id, $this->service_provider);
                 $response['raw'] =  $result->response;
-                $response['phone'] =  $reference_id;
-
-                // Mark as on-hold (we're awaiting the payment)
-                // $order->update_status('on-hold', __('Awaiting payment', 'wc-mpesa-payment-gateway'));
-
 
                 if ($result->response->output_ResponseCode == 'INS-0') {
                     $response['status'] = 'success';
@@ -310,7 +340,7 @@ function woocommerce_gateway_mpesa_init()
                 } else {
                     // Mark as Failed
                     $response['status'] = 'failed';
-                    $order->update_status('failed', __('Payment failed', 'wc-mpesa-payment-gateway'));
+                    $order->update_status('failed', __('Payment failed', 'wc-mpesa'));
                 }
 
                 $wpdb->insert("{$wpdb->prefix}wc_mpesa_transactions", [
@@ -318,46 +348,18 @@ function woocommerce_gateway_mpesa_init()
                     'order_id' => $order->get_id(),
                     'reference_id' => $reference_id,
                     'status' => $response['status'],
-                    'result_code' => $result->response->output_ResponseCode??null,  
+                    'result_code' => $result->response->output_ResponseCode ?? null,
                 ]);
             }
-
-            echo json_encode($response);
-            die();
+            wp_send_json($response);
         }
 
-        /**
-         * Output for the order received page.
-         *
-         * @return void
-         */
-        public function thankyou_page()
-        {
-
-            //iniciar transacao e redirecionar para a pagina de sucesso 
-
-            // if ($description = $this->get_description())
-            // 	echo wpautop(wptexturize(wp_kses_post($description)));
-
-            // echo '<h2>' . __('Our Details', 'wc-mPdopesa-payment-gateway') . '</h2>';
-
-            // echo '<ul class="order_details WooCommercePaymentGateway_details">';
-
-            // $fields = apply_filters('woocommerce_WooCommercePaymentGateway_fields', array(
-            // 	'example_field'  => __('Example field', 'wc-mpesa-payment-gateway')
-            // ));
-
-            // foreach ($fields as $key => $value) {
-            // 	if (!empty($this->$key)) {
-            // 		echo '<li class="' . esc_attr($key) . '">' . esc_attr($value) . ': <strong>' . wptexturize($this->$key) . '</strong></li>';
-            // 	}
-            // }
-            // echo '</ul>';
-        }
 
         function generate_reference_id($order_id)
         {
-            return $order_id.bin2hex(random_bytes(2)); //generate uniq reference_id;
+            //generate uniq reference_id;
+            //TODO: limit 10 chars
+            return $order_id . bin2hex(random_bytes(2));
         }
 
         function wc_minimum_order_amount()

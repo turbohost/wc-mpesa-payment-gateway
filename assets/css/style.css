@@ -1,23 +1,50 @@
 /* Override */
-.checkbox.pull-right { margin: 0; }
-.entry-header {
-  padding-bottom: 5px  !important ;
+.checkbox.pull-right {
+  margin: 0;
 }
+
+.entry-header {
+  padding-bottom: 5px !important;
+}
+
 /* Component */
 .payment-title {
-      font-weight: 400;
-      font-size: 2em;
+  font-weight: 400;
+  font-size: 2em;
+  text-align: center;
 
-  }
-  .payment-description {
-      white-space: pre;
-  }
-  .payment-btn {
-    background-color: red;
-    margin: 10px 0;
-    padding-left: 30px;
-    padding-right: 30px;
-    color: #fff;
-    font-size: 1.5em;
 }
 
+.payment-description {
+  text-align: center;
+}
+
+.payment-btn {
+  display: block;
+  width: 80%;
+  background-color: #e60000;
+  margin: 10px auto;
+  padding-left: 30px;
+  padding-right: 30px;
+  color: #fff;
+  font-size: 1.5em;
+  text-transform: uppercase;
+
+}
+
+.payment-btn:hover {
+  background-color: #cd0000;
+  color: #fff;
+}
+
+@media screen and (min-width : 720px) {
+  .payment-btn {
+    width: 50%;
+  }
+}
+
+
+/* hide syntax loading */
+[v-cloak] {
+  display: none;
+}

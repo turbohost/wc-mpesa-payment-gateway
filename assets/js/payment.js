@@ -1,41 +1,11 @@
-const text = {
-    intro : {
-      title: 'Informações de pagamento',
-      description :  `Verifique seus detalhes antes de pressionar o botão abaixo.
-O seu número de telefone DEVE estar registrado na MPesa (e Activo) para que isso funcione.
-Você receberá um pop-up no telefone solicitando a confirmação do pagamento.
-Digite o PIN do seu serviço (MPesa) para continuar.
-Você receberá uma mensagem de confirmação logo em seguida`,
-    },
-    requested: {
-      title: 'Solicitação de pagamento enviada!',
-      description: 'Verifique seu telefone e digite seu código PIN para confirmar o pagamento ...'
-    },
-    received: {
-      title: 'Pagamento recebido!',
-      description: 'Seu pagamento foi recebido e seu pedido será processado em breve.'
-    },
-    timeout:{
-      title: "Tempo limite de pagamento excedido!",
-      description: 'Use o botão Voltar do navegador e tente novamente.'
-    },
-    failed:{
-      title: "O pagamento falhou!",
-      description: 'Use o botão Voltar do navegador e tente novamente.'
-    }
-  };
 const TransactionTimeoutTime = 60000;
 const TransactionStatusTime = 3000;
-var response1;
 //TODO: implementar contador visivel
 
   let app = new Vue({
     el: '#app',
     data: {
-      status:{
-        title: text.intro.title,
-        description: text.intro.description
-      },
+      status:payment_text.intro,
       timerChecker : null,
       timeoutChecker: null,
       return_url: '#',

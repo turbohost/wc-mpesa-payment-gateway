@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wc Mpesa Payment Gateway\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-12 05:26+0000\n"
+"POT-Creation-Date: 2020-04-12 05:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -126,10 +126,6 @@ msgstr ""
 
 #: wc-mpesa-payment-gateway.php:342
 msgid "Payment failed"
-msgstr ""
-
-#: templates/payment.php:10
-msgid "Pay"
 msgstr ""
 
 #. Name of the plugin
