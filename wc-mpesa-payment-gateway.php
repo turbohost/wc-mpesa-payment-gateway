@@ -25,8 +25,8 @@ function  wc_mpesa_install()
 {
     global $wpdb;
     $table_name = $wpdb->prefix . "wc_mpesa_transactions";
-    
-    if(!get_option( 'wc_mpesa_version', WC_MPESA_DATABASE_VERSION )){
+
+    if (!get_option('wc_mpesa_version', WC_MPESA_DATABASE_VERSION)) {
 
 
 
@@ -41,16 +41,16 @@ function  wc_mpesa_install()
         status varchar(20) NULL,
         PRIMARY KEY  (id)
     ) $charset_collate;";
-    
+
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
 
-        update_option( 'wc_mpesa_version', WC_MPESA_DATABASE_VERSION );
+        update_option('wc_mpesa_version', WC_MPESA_DATABASE_VERSION);
     }
-
 }
 
-function wc_mpesa_update_check(){
+function wc_mpesa_update_check()
+{
     if (WC_MPESA_DATABASE_VERSION != get_option('wc_mpesa_version')) {
         wc_mpesa_install();
     }
@@ -122,6 +122,60 @@ function wc_mpesa_init()
 
 
 
+        /**
+         * Create form fields for the payment gateway
+         *
+         * @return void
+         */
+        public function init_form_fields()
+        {
+            $this->form_fields = array(
+                'enabled' => array(
+                    'title' => __('Enable/Disable', 'wc-mpesa'),
+                    'type' => 'checkbox',
+                    'label' => __('Enable WooCommerce M-pesa Payment Gateway', 'wc-mpesa'),
+                    'default' => 'no'
+                ),
+                'title' => array(
+                    'title' => __('Title', 'wc-mpesa'),
+                    'type' => 'text',
+                    'description' => __('This controls the title which the user sees during checkout', 'wc-mpesa'),
+                    'default' => __('M-PESA Payment Gateway', 'wc-mpesa'),
+                    'desc_tip'      => true,
+                ),
+                'description' => array(
+                    'title' => __('Customer Message', 'wc-mpesa'),
+                    'type' => 'textarea',
+                    'default' => __('Pay via mpesa', 'wc-mpesa')
+                ),
+                'api_key' => array(
+                    'title' => __('API Key', 'wc-mpesa'),
+                    'type' => 'text',
+                    'default' => __('', 'wc-mpesa')
+                ),
+                'public_key' => array(
+                    'title' => __('Public Key', 'wc-mpesa'),
+                    'type' => 'textarea',
+                    'default' => __('', 'wc-mpesa')
+                ),
+                'service_provider' => array(
+                    'title' => __('Service Provider Code', 'wc-mpesa'),
+                    'type' => 'text',
+                    'default' => __('', 'wc-mpesa')
+                ),
+                'test' => array(
+                    'title' => __('Test Mode', 'wc-mpesa'),
+                    'type' => 'checkbox',
+                    'default' => __('no', 'wc-mpesa'),
+                    'label' => __('Enable Test Environment', 'wc-mpesa'),
+                ),
+            );
+        }
+
+
+
+
+
         public function payment_fields()
         {
             // ok, let's display some description before the payment form
@@ -171,58 +225,6 @@ function wc_mpesa_init()
 
 
 
-
-        /**
-         * Create form fields for the payment gateway
-         *
-         * @return void
-         */
-        public function init_form_fields()
-        {
-            $this->form_fields = array(
-                'enabled' => array(
-                    'title' => __('Enable/Disable', 'wc-mpesa'),
-                    'type' => 'checkbox',
-                    'label' => __('Enable WooCommerce M-pesa Payment Gateway', 'wc-mpesa'),
-                    'default' => 'no'
-                ),
-                'title' => array(
-                    'title' => __('Title', 'wc-mpesa'),
-                    'type' => 'text',
-                    'description' => __('This controls the title which the user sees during checkout', 'wc-mpesa'),
-                    'default' => __('M-PESA Payment Gateway', 'wc-mpesa'),
-                    'desc_tip'      => true,
-                ),
-                'description' => array(
-                    'title' => __('Customer Message', 'wc-mpesa'),
-                    'type' => 'textarea',
-                    'default' => __('Pay via mpesa', 'wc-mpesa')
-                ),
-                'api_key' => array(
-                    'title' => __('API Key', 'wc-mpesa'),
-                    'type' => 'text',
-                    'default' => __('', 'wc-mpesa')
-                ),
-                'public_key' => array(
-                    'title' => __('Public Key', 'wc-mpesa'),
-                    'type' => 'textarea',
-                    'default' => __('', 'wc-mpesa')
-                ),
-                'service_provider' => array(
-                    'title' => __('Service Provider Code', 'wc-mpesa'),
-                    'type' => 'text',
-                    'default' => __('', 'wc-mpesa')
-                ),
-                'env' => array(
-                    'title' => __('Test Mode', 'wc-mpesa'),
-                    'type' => 'checkbox',
-                    'default' => __('no', 'wc-mpesa'),
-                    'label' => __('Enable Test Environment', 'wc-mpesa'),
-                ),
-            );
-        }
-
-
         function payment_scripts()
         {
             if (!is_checkout_pay_page()) {
@@ -241,7 +243,7 @@ function wc_mpesa_init()
             wp_localize_script('payment', 'payment_text', [
                 'intro'  => [
                     'title' => __('Payment Information', 'wc-mpesa'),
-                    'description'  =>__('<ul><li>Check your details before pressing the button below.</li><li>Your phone number MUST be registered with MPesa (and Active) for this to work.</li><li>You will receive a pop-up on the phone requesting payment confirmation.</li><li>Enter your service PIN (MPesa) to continue.</li><li>You will receive a confirmation message shortly thereafter</li></ul>', 'wc-mpesa'),
+                    'description'  => __('<ul><li>Check your details before pressing the button below.</li><li>Your phone number MUST be registered with MPesa (and Active) for this to work.</li><li>You will receive a pop-up on the phone requesting payment confirmation.</li><li>Enter your service PIN (MPesa) to continue.</li><li>You will receive a confirmation message shortly thereafter</li></ul>', 'wc-mpesa'),
                 ],
                 'requested' => [
                     'title' => __('Payment request sent!', 'wc-mpesa'),
@@ -312,7 +314,9 @@ function wc_mpesa_init()
             $mpesa = new \Karson\MpesaPhpSdk\Mpesa();
             $mpesa->setApiKey($this->api_key);
             $mpesa->setPublicKey($this->public_key);
-            $mpesa->setEnv('live');
+            if (!$this->test) {
+                $mpesa->setEnv('live');
+            }
 
 
             $order = new WC_Order(filter_input(INPUT_POST, 'order_id', FILTER_VALIDATE_INT));

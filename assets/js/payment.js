@@ -21,10 +21,10 @@ const TransactionStatusTime = 3000;
           this.checkTimeout();
           axios.post('/?wc-api=process_action', params).then(function (response) {
             if(response.data.status == 'success'){
-              this.status = text.received;
+              this.status = payment_text.received;
               setTimeout(()=> (window.location.href = this.return_url) , 5000);
             }else if(response.data.status == 'failed') {
-              this.status = text.failed;
+              this.status = payment_text.failed;
             }
           }.bind(this))
         },

@@ -2,7 +2,7 @@
 Contributors: karson8
 Tags: e-commerce, store, sales, sell, woo, shop, cart, checkout, downloadable, downloads, payments, m-pesa, storefront, woo commerce, gateway
 Requires at least: 5.0
-Tested up to: 5.2
+Tested up to: 5.4
 Requires PHP: 7.2
 Stable tag: 1.0
 License: GPLv2 or later

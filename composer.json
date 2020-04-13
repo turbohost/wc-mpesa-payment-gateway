@@ -1,5 +1,5 @@
 {
     "require": {
-        "karson/mpesa-php-sdk": "^1.0"
+        "karson/mpesa-php-sdk": "^1.1"
     }
 }
