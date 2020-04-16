@@ -80,7 +80,7 @@ function wc_mpesa_init()
     class WC_Gateway_MPESA extends WC_Payment_Gateway
     {
 
-        //TODO: Implementar a tradução das strings
+
         public function __construct()
         {
 
@@ -310,7 +310,7 @@ function wc_mpesa_init()
             global $wpdb;
             // start_session();
 
-            //TODO: update to new api
+            
             $mpesa = new \Karson\MpesaPhpSdk\Mpesa();
             $mpesa->setApiKey($this->api_key);
             $mpesa->setPublicKey($this->public_key);
@@ -361,9 +361,8 @@ function wc_mpesa_init()
 
         function generate_reference_id($order_id)
         {
-            //generate uniq reference_id;
-            //TODO: limit 10 chars
-            return $order_id . bin2hex(random_bytes(2));
+            //generate uniq reference_id
+            return substr($order_id . bin2hex(random_bytes(5)), 10);
         }
 
         function wc_minimum_order_amount()
