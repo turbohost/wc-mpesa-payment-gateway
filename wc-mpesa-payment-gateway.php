@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: M-Pesa Payment Gateway for WooCommerce
+Plugin Name: THC M-Pesa Payment Gateway
 Plugin URI: http://turbohost.co.mz/wo-mpesa-payment-gateway/
 Description: MPESA Payment Gateway.
 Version: 1.0
@@ -87,7 +87,7 @@ function wc_mpesa_init()
             $this->id                 = 'wc-mpesa';
             $this->icon               = apply_filters('wc-mpesa_icon', plugins_url('assets/img/mpesa-logo.jpeg', __FILE__));
             $this->has_fields         = false;
-            $this->method_title       = __('M-PESA Payment Gateway', 'woocommerce');
+            $this->method_title       = __('THC M-PESA Payment Gateway', 'woocommerce');
             $this->method_description = __('Allow to pay via M-PESA', 'wc-mpesa');
 
             // Load the settings.
