@@ -1,5 +1,4 @@
 const TransactionTimeoutTime = 60000;
-const TransactionStatusTime = 3000;
 //TODO: implementar contador visivel
 
   let app = new Vue({
@@ -17,8 +16,8 @@ const TransactionStatusTime = 3000;
           this.return_url = info.return_url;
           const params = new URLSearchParams();
           params.append('order_id',info.order_id);
-          
           this.checkTimeout();
+          this.status = payment_text.requested;
           axios.post('/?wc-api=process_action', params).then(function (response) {
             if(response.data.status == 'success'){
               this.status = payment_text.received;
@@ -33,7 +32,7 @@ const TransactionStatusTime = 3000;
       },
         checkTimeout: function () {
           this.timeoutChecker = setTimeout( () => {
-            this.status = text.timeout;
+            this.status = payment_text.timeout;
             clearInterval(this.timerChecker)
           }, TransactionTimeoutTime)
         }
