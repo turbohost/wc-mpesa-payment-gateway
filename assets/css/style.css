@@ -39,6 +39,7 @@
 
 .payment-btn:disabled {
   background-color: #cab4b4;
+  border-color:  #c6b4b4;
 }
 
 
