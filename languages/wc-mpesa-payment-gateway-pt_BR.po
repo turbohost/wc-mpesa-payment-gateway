@@ -3,10 +3,10 @@ msgstr ""
 "Project-Id-Version: Wc Mpesa Payment Gateway\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-14 18:29+0000\n"
-"PO-Revision-Date: 2020-05-14 18:38+0000\n"
+"PO-Revision-Date: 2020-05-14 18:33+0000\n"
 "Last-Translator: Karson Adam\n"
-"Language-Team: Português\n"
-"Language: pt_PT\n"
+"Language-Team: Português do Brasil\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +28,7 @@ msgstr "Ativar/Desativar"
 
 #: wc-mpesa-payment-gateway.php:128
 msgid "Enable Mobile M-Pesa Payment Gateway"
-msgstr "Ativar Mobile M-Pesa Payment Gateway"
+msgstr "Ativar  Mobile M-Pesa Payment Gateway Ativo"
 
 #: wc-mpesa-payment-gateway.php:132
 msgid "Title"
@@ -74,7 +74,7 @@ msgstr "Ativar Ambiente de Teste"
 
 #: wc-mpesa-payment-gateway.php:179
 msgid "<br/> TEST MODE ENABLED."
-msgstr "<br/> MODO DE TESTE ATIVO"
+msgstr "<br/> MODO DE TESTE ACTIVO."
 
 #: wc-mpesa-payment-gateway.php:194
 msgid "ex: 84 123 4567"

@@ -7,6 +7,6 @@
         order_id: '<?= $order_id ?>',
         return_url: '<?= $return_url ?>',
     })">
-    <?= __('Pay', 'wc-mpesa') ?>
+    <?= __('Pay', 'wc-mpesa-payment-gateway') ?>
   </button>
 </div>

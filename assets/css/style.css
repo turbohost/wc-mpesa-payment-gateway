@@ -29,13 +29,20 @@
   color: #fff;
   font-size: 1.5em;
   text-transform: uppercase;
-
+  border-width: 0;
 }
 
 .payment-btn:hover {
   background-color: #cd0000;
   color: #fff;
 }
+
+
+.payment-btn:disabled {
+  background-color: #ca6f6f;
+  color: #fff;
+}
+
 
 @media screen and (min-width : 720px) {
   .payment-btn {
