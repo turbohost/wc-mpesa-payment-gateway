@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wc Mpesa Payment Gateway\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-14 18:29+0000\n"
+"POT-Creation-Date: 2020-05-16 08:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -76,6 +76,10 @@ msgstr ""
 msgid "<br/> TEST MODE ENABLED."
 msgstr ""
 
+#: wc-mpesa-payment-gateway.php:193
+msgid "Mpesa number"
+msgstr ""
+
 #: wc-mpesa-payment-gateway.php:194
 msgid "ex: 84 123 4567"
 msgstr ""
@@ -133,7 +137,7 @@ msgstr ""
 msgid "Payment failed!"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:362
+#: wc-mpesa-payment-gateway.php:360
 msgid "Payment failed"
 msgstr ""
 

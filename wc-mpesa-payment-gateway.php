@@ -3,9 +3,9 @@
 Plugin Name: Mobile M-Pesa Payment Gateway
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.1
+Version: 1.1.1
 WC requires at least: 4.0.0
-WC tested up to: 4.0.1
+WC tested up to: 4.1.0
 Author: karson <karson@turbohost.co.mz>
 Author URI: http://karsonadam.com
 
@@ -175,7 +175,7 @@ function wc_mpesa_init()
             // ok, let's display some description before the payment form
             if ($this->description) {
                 // you can instructions for test mode, I mean test card numbers etc.
-                if ($this->test) {
+                if ('yes' == $this->test) {
                     $this->description .= __('<br/> TEST MODE ENABLED.', 'wc-mpesa-payment-gateway');
                     $this->description  = trim($this->description);
                 }
@@ -190,7 +190,7 @@ function wc_mpesa_init()
 
 
             //Use unique IDs, because other gateways could already use 
-            echo '<div class="form-row form-row-wide"><label>Mpesa Number <span class="required">*</span></label>
+            echo '<div class="form-row form-row-wide"><label>'.esc_html__('Mpesa number', 'wc-mpesa-payment-gateway').'<span class="required">*</span></label>
                 <input name="mpesa_number" type="tel" value="' . esc_attr($phone) . '" placeholder="'.esc_attr__('ex: 84 123 4567', 'wc-mpesa-payment-gateway').'">
                 </div>';
 
@@ -315,7 +315,7 @@ function wc_mpesa_init()
             $mpesa = new \Karson\MpesaPhpSdk\Mpesa();
             $mpesa->setApiKey($this->api_key);
             $mpesa->setPublicKey($this->public_key);
-            if (!$this->test) {
+            if ('yes' != $this->test) {
                 $mpesa->setEnv('live');
             }
             //  else {

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wc Mpesa Payment Gateway\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-14 18:29+0000\n"
-"PO-Revision-Date: 2020-05-14 18:33+0000\n"
+"POT-Creation-Date: 2020-05-16 08:01+0000\n"
+"PO-Revision-Date: 2020-05-16 10:40+0000\n"
 "Last-Translator: Karson Adam\n"
 "Language-Team: Português do Brasil\n"
 "Language: pt_BR\n"
@@ -76,6 +76,10 @@ msgstr "Ativar Ambiente de Teste"
 msgid "<br/> TEST MODE ENABLED."
 msgstr "<br/> MODO DE TESTE ACTIVO."
 
+#: wc-mpesa-payment-gateway.php:193
+msgid "Mpesa number"
+msgstr "Número da conta"
+
 #: wc-mpesa-payment-gateway.php:194
 msgid "ex: 84 123 4567"
 msgstr "ex: 84 123 4567"
@@ -140,7 +144,7 @@ msgstr "Use o botão Voltar do navegador e tente novamente."
 msgid "Payment failed!"
 msgstr "O pagamento falhou!"
 
-#: wc-mpesa-payment-gateway.php:362
+#: wc-mpesa-payment-gateway.php:360
 msgid "Payment failed"
 msgstr "Falha no pagamento"
 

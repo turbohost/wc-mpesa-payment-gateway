@@ -29,18 +29,16 @@
   color: #fff;
   font-size: 1.5em;
   text-transform: uppercase;
-  border-width: 0;
+  border: 1px solid #c60000;
 }
 
 .payment-btn:hover {
   background-color: #cd0000;
-  color: #fff;
 }
 
 
 .payment-btn:disabled {
-  background-color: #ca6f6f;
-  color: #fff;
+  background-color: #cab4b4;
 }
 
 
