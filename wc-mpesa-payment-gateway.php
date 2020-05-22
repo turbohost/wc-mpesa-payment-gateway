@@ -153,13 +153,13 @@ function wc_mpesa_init()
                 'service_provider' => array(
                     'title' => __('Service Provider Code', 'wc-mpesa-payment-gateway'),
                     'type' => 'text',
-                    'default' => __('', 'wc-mpesa-payment-gateway')
+                    'default' => __('171717', 'wc-mpesa-payment-gateway')
                 ),
                 'test' => array(
                     'title' => __('Test Mode', 'wc-mpesa-payment-gateway'),
                     'type' => 'checkbox',
                     'label' => __('Enable Test Environment', 'wc-mpesa-payment-gateway'),
-                    'default' => 'no',
+                    'default' => 'yes',
                 ),
 
             );

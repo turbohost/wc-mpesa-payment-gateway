@@ -18,7 +18,7 @@ const TransactionTimeoutTime = 60000;
           params.append('order_id',info.order_id);
           this.checkTimeout();
           this.status = payment_text.requested;
-          axios.post('/?wc-api=process_action', params).then(function (response) {
+          axios.post('?wc-api=process_action', params).then(function (response) {
             if(response.data.status == 'success'){
               this.status = payment_text.received;
               setTimeout(()=> (window.location.href = this.return_url) , 5000);
