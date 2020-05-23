@@ -15,7 +15,8 @@
 
 }
 
-.payment-description {
+.payment-description,
+.payment-error {
   text-align: center;
 }
 
@@ -40,6 +41,10 @@
 .payment-btn:disabled {
   background-color: #cab4b4;
   border-color:  #c6b4b4;
+}
+
+.payment-error {
+  color: #b44;
 }
 
 

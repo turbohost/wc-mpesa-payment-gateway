@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
 Version: 1.2.0
 WC requires at least: 4.0.0
-WC tested up to: 4.1.0
+WC tested up to: 4.1.1
 Author: karson <karson@turbohost.co.mz>
 Author URI: http://karsonadam.com
 
@@ -154,7 +154,7 @@ function wc_mpesa_init()
                     'title' => __('Service Provider Code', 'wc-mpesa-payment-gateway'),
                     'type' => 'text',
                     'description' => __('Use 171717 for testing', 'wc-mpesa-payment-gateway'),
-                    'default' => __('171717', 'wc-mpesa-payment-gateway')
+                    'default' => 171717
                 ),
                 'test' => array(
                     'title' => __('Test Mode', 'wc-mpesa-payment-gateway'),
@@ -266,13 +266,6 @@ function wc_mpesa_init()
                         'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa-payment-gateway')
                     ],
                 ],
-                'errors' => [
-                    'invalid_shortcode' => __('Invalid Shortcode Used!', 'wc-mpesa-payment-gateway'),
-                    'server_down' => __('Unable to handle the request due to a temporary overloading!', 'wc-mpesa-payment-gateway'),
-                    'account_inactive' => __('Customer Account Status Not Active!', 'wc-mpesa-payment-gateway'),
-                    'auth_failed' => __('Initiator authentication error!', 'wc-mpesa-payment-gateway'),
-                    'no_balance' => __('Insufficient balance!', 'wc-mpesa-payment-gateway'),
-                ]
             ]);
             wp_enqueue_style('style', plugin_dir_url(__FILE__) . '/assets/css/style.css', false, false, 'all');
         }
@@ -344,9 +337,10 @@ function wc_mpesa_init()
                     $response['raw'] =  $e->getMessage();
                     return wp_send_json_error($response);
                 }
-                $response['raw'] =  $result->response;
-
-                if ($result->response->output_ResponseCode == 'INS-0') {
+                if ('yes' == $this->test) {
+                    $response['raw'] =  $result->response;
+                }
+                if ($response['code'] == 'INS-0') {
                     // Mark as paid 
                     $order->payment_complete();
                     // Reduce stock levels
@@ -360,16 +354,49 @@ function wc_mpesa_init()
                 } else {
                     // Mark as Failed
                     $response['status'] = 'failed';
+                    switch ($result->response->output_ResponseCode) {
+                            //show detailed error message
+                        case 'INS-13':
+                            $error_message  = __('Invalid Shortcode Used!', 'wc-mpesa-payment-gateway');
+                            break;
+                        case 'INS-16':
+                            $error_message  = __('Unable to handle the request due to a temporary overloading!', 'wc-mpesa-payment-gateway');
+                            break;
+                        case 'INS-996':
+                            $error_message  = __('Customer Account Status Not Active!', 'wc-mpesa-payment-gateway');
+                            break;
+                        case 'INS-2001':
+                            $error_message  = __('Initiator authentication error!', 'wc-mpesa-payment-gateway');
+                            break;
+                        case 'INS-2006':
+                            $error_message  = __('Insufficient balance!', 'wc-mpesa-payment-gateway');
+                            break;
+                        default:
+                            break;
+                    }
+                    //Detect API key error
+                    if ($result->response->output_error) {
+                        if (strpos($result->response->output_error, 'not authorized')) {
+                            $error_message = __('API or Public key is not authorized!', 'wc-mpesa-payment-gateway');
+                        } else if ($result->response->output_error = 'Bad API Key') {
+                            $error_message = __('Bad API Key!', 'wc-mpesa-payment-gateway');
+                        }
+                    }
+                    $response['error_message'] = $error_message;
                     $order->update_status('failed', __('Payment failed', 'wc-mpesa-payment-gateway'));
                 }
 
-                $wpdb->insert("{$wpdb->prefix}wc_mpesa_transactions", [
-                    'phone' => $phone,
-                    'order_id' => $order->get_id(),
-                    'reference_id' => $reference_id,
-                    'status' => $response['status'],
-                    'result_code' => $result->response->output_ResponseCode ?? null,
-                ]);
+                try {
+                    $wpdb->insert("{$wpdb->prefix}wc_mpesa_transactions", [
+                        'phone' => $phone,
+                        'order_id' => $order->get_id(),
+                        'reference_id' => $reference_id,
+                        'status' => $response['status'],
+                        'result_code' => $response['code'] ?? null,
+                    ]);
+                } catch (\Throwable $th) {
+                    $response['raw'] = $th->getMessage();
+                }
             }
             wp_send_json($response);
         }

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wc Mpesa Payment Gateway\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-16 08:01+0000\n"
+"POT-Creation-Date: 2020-05-23 15:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -64,43 +64,47 @@ msgstr ""
 msgid "Service Provider Code"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:159
+#: wc-mpesa-payment-gateway.php:156
+msgid "Use 171717 for testing"
+msgstr ""
+
+#: wc-mpesa-payment-gateway.php:160
 msgid "Test Mode"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:161
+#: wc-mpesa-payment-gateway.php:162
 msgid "Enable Test Environment"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:179
+#: wc-mpesa-payment-gateway.php:180
 msgid "<br/> TEST MODE ENABLED."
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:193
+#: wc-mpesa-payment-gateway.php:194
 msgid "Mpesa number"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:194
+#: wc-mpesa-payment-gateway.php:195
 msgid "ex: 84 123 4567"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:205
+#: wc-mpesa-payment-gateway.php:206
 msgid "Currency not supported!"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:212
+#: wc-mpesa-payment-gateway.php:213
 msgid "Phone number is required!"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:216
+#: wc-mpesa-payment-gateway.php:217
 msgid "Phone number is incorrect!"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:246
+#: wc-mpesa-payment-gateway.php:249
 msgid "Payment Information"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:247
+#: wc-mpesa-payment-gateway.php:250
 msgid ""
 "<ul><li>Check your details before pressing the button below.</li><li>Your "
 "phone number MUST be registered with MPesa (and Active) for this to work."
@@ -109,39 +113,67 @@ msgid ""
 "You will receive a confirmation message shortly thereafter</li></ul>"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:250
+#: wc-mpesa-payment-gateway.php:253
 msgid "Payment request sent!"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:251
+#: wc-mpesa-payment-gateway.php:254
 msgid "Check your mobile phone and enter your PIN code to confirm payment ..."
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:254
+#: wc-mpesa-payment-gateway.php:257
 msgid "Payment received!"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:255
+#: wc-mpesa-payment-gateway.php:258
 msgid "Your payment has been received and your order will be processed soon."
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:258
+#: wc-mpesa-payment-gateway.php:261
 msgid "Payment timeout exceeded!"
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:259 wc-mpesa-payment-gateway.php:263
+#: wc-mpesa-payment-gateway.php:262 wc-mpesa-payment-gateway.php:266
 msgid "Use your browser's back button and try again."
 msgstr ""
 
-#: wc-mpesa-payment-gateway.php:262
+#: wc-mpesa-payment-gateway.php:265
 msgid "Payment failed!"
 msgstr ""
 
 #: wc-mpesa-payment-gateway.php:360
+msgid "Invalid Shortcode Used!"
+msgstr ""
+
+#: wc-mpesa-payment-gateway.php:363
+msgid "Unable to handle the request due to a temporary overloading!"
+msgstr ""
+
+#: wc-mpesa-payment-gateway.php:366
+msgid "Customer Account Status Not Active!"
+msgstr ""
+
+#: wc-mpesa-payment-gateway.php:369
+msgid "Initiator authentication error!"
+msgstr ""
+
+#: wc-mpesa-payment-gateway.php:372
+msgid "Insufficient balance!"
+msgstr ""
+
+#: wc-mpesa-payment-gateway.php:380
+msgid "API or Public key is not authorized!"
+msgstr ""
+
+#: wc-mpesa-payment-gateway.php:382
+msgid "Bad API Key!"
+msgstr ""
+
+#: wc-mpesa-payment-gateway.php:386
 msgid "Payment failed"
 msgstr ""
 
-#: templates/payment.php:10
+#: templates/payment.php:11
 msgid "Pay"
 msgstr ""
 

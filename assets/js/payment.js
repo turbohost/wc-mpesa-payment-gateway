@@ -1,5 +1,5 @@
 const TransactionTimeoutTime = 60000;
-//TODO: implementar contador visivel
+//TODO: implement visual counter
 
 let app = new Vue({
   el: '#app',
@@ -9,7 +9,7 @@ let app = new Vue({
     timeoutChecker: null,
     return_url: '#',
     disabled: false,
-    error,
+    error: null,
   },
   methods: {
     requestSyncPayment: function (info) {
@@ -25,27 +25,8 @@ let app = new Vue({
           setTimeout(() => (window.location.href = this.return_url), 5000);
         } else if (response.data.status == 'failed') {
           this.status = payment_text.status.failed;
-          switch (data.status_code) {
-            //show detailed error message
-            case 'INS-13':
-              this.error  = payment_text.errors.invalid_shortcode;
-              break;
-            case 'INS-16':
-              this.error  = payment_text.errors.server_down;
-              break;
-            case 'INS-996':
-              this.error  = payment_text.errors.account_inactive;
-              break;
-            case 'INS-2001':
-              this.error  = payment_text.errors.auth_failed;
-              break;
-            case 'INS-2006':
-              this.error  = payment_text.errors.no_balance;
-              break;
-            default:
-              break;
-          }
-
+          this.error = response.data.error_message;
+          clearInterval(this.timerChecker);
         }
       }.bind(this))
     },
@@ -55,7 +36,7 @@ let app = new Vue({
     checkTimeout: function () {
       this.timeoutChecker = setTimeout(() => {
         this.status = payment_text.status.timeout;
-        clearInterval(this.timerChecker)
+        clearInterval(this.timerChecker);
       }, TransactionTimeoutTime)
     }
   }
