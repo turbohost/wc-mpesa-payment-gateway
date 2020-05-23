@@ -27,9 +27,10 @@ Para usar o plugin é necessário criar uma conta no [portal de desenvolvedores 
 
 Se tiver  alguma dúvida :
 
-* Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/faq).
+* Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/#faq).
 * Utilize o nosso fórum no [Github](https://github.com/turbohost-co/wc-mpesa-payment-gateway/issues).
 * Crie um tópico no [fórum de ajuda do WordPress](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/).
+* Você pode entrar em contato pelo whatsapp ou SMS no número +258 84 8283 607.
 
 ### Contribuir
 
