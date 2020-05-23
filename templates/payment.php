@@ -2,6 +2,7 @@
   <div>
     <h4 class="payment-title" v-cloak>{{status.title}}</h4>
     <div class="payment-description" role="alert" v-html="status.description"></div>
+    <div v-if="status.error" class="payment-error" role="error">{{status.error}}</div>
   </div>
   <button class="payment-btn" v-bind="{ disabled }" v-on:click="requestSyncPayment({
         order_id: '<?= $order_id ?>',

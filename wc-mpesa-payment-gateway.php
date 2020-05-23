@@ -3,7 +3,7 @@
 Plugin Name: Mobile M-Pesa Payment Gateway
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.1.1
+Version: 1.2.0
 WC requires at least: 4.0.0
 WC tested up to: 4.1.0
 Author: karson <karson@turbohost.co.mz>
@@ -153,6 +153,7 @@ function wc_mpesa_init()
                 'service_provider' => array(
                     'title' => __('Service Provider Code', 'wc-mpesa-payment-gateway'),
                     'type' => 'text',
+                    'description' => __('Use 171717 for testing', 'wc-mpesa-payment-gateway'),
                     'default' => __('171717', 'wc-mpesa-payment-gateway')
                 ),
                 'test' => array(
@@ -183,15 +184,15 @@ function wc_mpesa_init()
                 echo wpautop(wp_kses_post($this->description));
             }
 
-               $phone = $_SESSION['wc_mpesa_phone']??'';
+            $phone = $_SESSION['wc_mpesa_phone'] ?? '';
 
             // I will echo() the form, but you can close PHP tags and print it directly in HTML
             echo '<fieldset id="wc-' . esc_attr($this->id) . '-cc-form" class="wc-credit-card-form wc-payment-form" style="background:transparent;">';
 
 
             //Use unique IDs, because other gateways could already use 
-            echo '<div class="form-row form-row-wide"><label>'.esc_html__('Mpesa number', 'wc-mpesa-payment-gateway').'<span class="required">*</span></label>
-                <input name="mpesa_number" type="tel" value="' . esc_attr($phone) . '" placeholder="'.esc_attr__('ex: 84 123 4567', 'wc-mpesa-payment-gateway').'">
+            echo '<div class="form-row form-row-wide"><label>' . esc_html__('Mpesa number', 'wc-mpesa-payment-gateway') . '<span class="required">*</span></label>
+                <input name="mpesa_number" type="tel" value="' . esc_attr($phone) . '" placeholder="' . esc_attr__('ex: 84 123 4567', 'wc-mpesa-payment-gateway') . '">
                 </div>';
 
             echo '<div class="clear"></div></fieldset>';
@@ -241,38 +242,47 @@ function wc_mpesa_init()
 
             wp_enqueue_script('axios', plugin_dir_url(__FILE__) . '/assets/js/axios.min.js', array('vue'), false, true);
             wp_enqueue_script('payment', plugin_dir_url(__FILE__) . '/assets/js/payment.js', array('vue', 'axios'), false, true);
+
             wp_localize_script('payment', 'payment_text', [
-                'intro'  => [
-                    'title' => __('Payment Information', 'wc-mpesa-payment-gateway'),
-                    'description'  => __('<ul><li>Check your details before pressing the button below.</li><li>Your phone number MUST be registered with MPesa (and Active) for this to work.</li><li>You will receive a pop-up on the phone requesting payment confirmation.</li><li>Enter your service PIN (MPesa) to continue.</li><li>You will receive a confirmation message shortly thereafter</li></ul>', 'wc-mpesa-payment-gateway'),
+                'status' => [
+                    'intro'  => [
+                        'title' => __('Payment Information', 'wc-mpesa-payment-gateway'),
+                        'description'  => __('<ul><li>Check your details before pressing the button below.</li><li>Your phone number MUST be registered with MPesa (and Active) for this to work.</li><li>You will receive a pop-up on the phone requesting payment confirmation.</li><li>Enter your service PIN (MPesa) to continue.</li><li>You will receive a confirmation message shortly thereafter</li></ul>', 'wc-mpesa-payment-gateway'),
+                    ],
+                    'requested' => [
+                        'title' => __('Payment request sent!', 'wc-mpesa-payment-gateway'),
+                        'description' => __('Check your mobile phone and enter your PIN code to confirm payment ...', 'wc-mpesa-payment-gateway')
+                    ],
+                    'received' => [
+                        'title' => __('Payment received!', 'wc-mpesa-payment-gateway'),
+                        'description' => __('Your payment has been received and your order will be processed soon.', 'wc-mpesa-payment-gateway')
+                    ],
+                    'timeout' => [
+                        'title' => __('Payment timeout exceeded!', 'wc-mpesa-payment-gateway'),
+                        'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa-payment-gateway')
+                    ],
+                    'failed' => [
+                        'title' => __('Payment failed!', 'wc-mpesa-payment-gateway'),
+                        'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa-payment-gateway')
+                    ],
                 ],
-                'requested' => [
-                    'title' => __('Payment request sent!', 'wc-mpesa-payment-gateway'),
-                    'description' => __('Check your mobile phone and enter your PIN code to confirm payment ...', 'wc-mpesa-payment-gateway')
-                ],
-                'received' => [
-                    'title' => __('Payment received!', 'wc-mpesa-payment-gateway'),
-                    'description' => __('Your payment has been received and your order will be processed soon.', 'wc-mpesa-payment-gateway')
-                ],
-                'timeout' => [
-                    'title' => __('Payment timeout exceeded!', 'wc-mpesa-payment-gateway'),
-                    'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa-payment-gateway')
-                ],
-                'failed' => [
-                    'title' => __('Payment failed!', 'wc-mpesa-payment-gateway'),
-                    'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa-payment-gateway')
+                'errors' => [
+                    'invalid_shortcode' => __('Invalid Shortcode Used!', 'wc-mpesa-payment-gateway'),
+                    'server_down' => __('Unable to handle the request due to a temporary overloading!', 'wc-mpesa-payment-gateway'),
+                    'account_inactive' => __('Customer Account Status Not Active!', 'wc-mpesa-payment-gateway'),
+                    'auth_failed' => __('Initiator authentication error!', 'wc-mpesa-payment-gateway'),
+                    'no_balance' => __('Insufficient balance!', 'wc-mpesa-payment-gateway'),
                 ]
             ]);
-            wp_enqueue_style('style', plugin_dir_url(__FILE__) . '/assets/css/style.css', false, '1.1', 'all');
+            wp_enqueue_style('style', plugin_dir_url(__FILE__) . '/assets/css/style.css', false, false, 'all');
         }
 
         function payment_form_html($order_id)
         {
+            // modify post object here
             $order = new WC_Order($order_id);
-            //get transaction using reference_id
             $return_url = $this->get_return_url($order);
             require plugin_dir_path(__FILE__) . '/templates/payment.php';
-            // modify post object here
         }
 
 
@@ -318,9 +328,6 @@ function wc_mpesa_init()
             if ('yes' != $this->test) {
                 $mpesa->setEnv('live');
             }
-            //  else {
-            //     $this->service_provider = 171717;
-            // }
 
             //Update code to use wp_send_json status instead custom status to reduce redundancy
             $order = new WC_Order(filter_input(INPUT_POST, 'order_id', FILTER_VALIDATE_INT));
@@ -330,19 +337,16 @@ function wc_mpesa_init()
                 $reference_id = $this->generate_reference_id($order_id);
                 $phone = "258{$_SESSION['wc_mpesa_phone']}";
                 $response = [];
-                try{
+                try {
                     $result = $mpesa->c2b($order_id, $phone, $amount, $reference_id, $this->service_provider);
-                }catch(\Exception $e){
+                } catch (\Exception $e) {
                     $response['status'] = 'failed';
                     $response['raw'] =  $e->getMessage();
                     return wp_send_json_error($response);
                 }
                 $response['raw'] =  $result->response;
 
-                
-
                 if ($result->response->output_ResponseCode == 'INS-0') {
-                    $response['status'] = 'success';
                     // Mark as paid 
                     $order->payment_complete();
                     // Reduce stock levels
@@ -350,10 +354,9 @@ function wc_mpesa_init()
 
                     // some notes to customer (replace true with false to make it private)
                     $order->add_order_note('Your order is paid! Thank you!', true);
-
-
                     // Remove cart
                     WC()->cart->empty_cart();
+                    $response['status'] = 'success';
                 } else {
                     // Mark as Failed
                     $response['status'] = 'failed';
