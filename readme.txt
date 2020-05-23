@@ -1,29 +1,92 @@
 === Mobile M-Pesa Payment Gateway  ===
 Contributors: karson9
-Tags:  m-pesa, mpesa,  woocommerce, gateway, Mobile Payments, Mozambique, mpesa online, mpesa api, Mpesa API Mozambique
+Author URI: http://karsonadam.com/
+Plugin URL: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
+Tags:  mpesa, m-pesa, woocommerce, mpesa api, gateway, Mobile Payments, Mozambique, mpesa online, Mpesa API Mozambique
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 7.0
-Stable tag: 1.1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
-Receive payments directly to your store through the Vodacom Mozambique M-Pesa API. 
+Receba pagamentos de clientes Mpesa diretamente em sua loja virtual usando a API M-Pesa da Vodacom Moçambique.
 
 == Description ==
-Mobile M-Pesa Payment Gateway plugin allows you to receive payments directly to your store through the Vodacom Mozambique M-Pesa API.
-Through Mobile M-Pesa Payment Gateway, shoppers at your store can purchase products or services at your store using a phone number associated with the M-Pesa account.
+
+O plugin *Mobile M-Pesa Payment Gateway* permite que você receba pagamentos diretamente em sua loja virtual através da API M-Pesa da Vodacom Moçambique.
+Por meio do *Mobile M-Pesa Payment Gateway*, os compradores de sua loja podem comprar produtos ou serviços em sua loja usando um número de telefone associado à conta M-Pesa.
+
+
+== Other Notes ==
+
+= Pre requisitos =
+Para usar o plugin é necessário criar uma conta no (portal de desenvolvedores do M-pesa)[https://developer.mpesa.vm.co.mz/] onde irá obter as credenciais necessárias para configurar a conta.
+
+### Dúvidas
+
+Se tiver  alguma dúvida :
+
+* Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/faq).
+* Utilize o nosso fórum no [Github](https://github.com/turbohost-co/wc-mpesa-payment-gateway/issues).
+* Crie um tópico no [fórum de ajuda do WordPress](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/).
+
+### Contribuir
+
+Você pode contribuir com o código fonte em nossa [página do GitHub](https://github.com/turbohost-co/wc-mpesa-payment-gateway).
+
+
+
+Este plugin foi desenvolvido sem nenhum incentivo da Vodacom. Nenhum dos desenvolvedores deste plugin possuem vínculos com estas duas empresas.
 
  
 == Installation ==
-###Automatic Installation
-1. Login to your WordPress Dashboard
-2. Click on 'Plugins > Add New' from the left menu.
-3. In the search box type Mobile M-Pesa Payment Gateway.
-4. Click on Install Now on Mobile M-Pesa Payment Gateway to install the plugin on your site and activate the plugin.
-5. Click on 'WooCommerce > Settings' from the left menu and click the 'Checkout' tab.
-6. Click on the Mobile M-Pesa Payment Gateway from the available Checkout 
-7. Configure your Mobile M-Pesa Payment Gateway settings using credentials available on https://developer.mpesa.vm.co.mz/
+
+### Instalação automática
+
+1. Faça login no seu painel do WordPress
+2. Clique em *Plugins> Adicionar novo* no menu esquerdo.
+3. Na caixa de pesquisa, digite **Mobile M-Pesa Payment Gateway**.
+4. Clique em *Instalar agora* no **Mobile M-Pesa Payment Gateway** para instalar o plug-in no seu site e em seguida clique em  *ativar* o plug-in.
+5. Clique em *WooCommerce> Configurações* no menu esquerdo e clique na guia *Pagamentos*.
+6. Clique em **Mobile M-Pesa Payment Gateway** na lista dos métodos de pagamento disponíveis
+7. Defina as configurações do Mobile M-Pesa Payment Gateway usando credenciais disponíveis em https://developer.mpesa.vm.co.mz/
+
  
-###Manual Installation
-In case the automatic installation doesn’t work, download the plugin from here via the Download-button. Unpack the archive and load the folder via FTP into the directory wp-content/plugins of your WordPress installation. Go to Plugins > Installed plugins and click Activate on Mobile M-Pesa Payment Gateway.
+
+### Instalação manual
+
+Caso a instalação automática não funcione, faça o download do plug-in aqui usando o botão Download.
+
+1. Descompacte o arquivo e carregue a pasta via FTP no diretório *wp-content/plugins* da sua instalação do WordPress.
+2. Vá para *Plugins> Plugins instalados* e clique em *Ativar* no Mobile M-Pesa Payment Gateway.
+
+== Screenshots ==
+
+
+1. Lista dos método de pagamento com o  *Mobile M-Pesa Payment Gateway* ativo
+2. Configuração das credenciais método de pagamento Mpesa.
+3. Página da Finalização do pagamento com o método de pagamento selecionado com o campo para digitar o número do telefone mpesa
+4. Página de pagamento com as instruções para que o cliente finalize o pagamento.
+
+== Frequently Asked Questions ==
+
+= Onde encontro as credenciais para configurar o plug-in? =
+
+Para obter credenciais, crie uma conta em https://developer.mpesa.vm.co.mz/
+
+= o que devo colocar no campo *Código do provedor de serviços*? =
+
+* Se você estiver no ambiente de teste, use **171717**
+* Se você estiver no ambiente de produção, use código de produção fornecido pela Vodacom.
+
+== Changelog ==
+
+= 1.2 =
+
+* Feedback de erro aprimorado na página de pagamento
+* Corrigido o erro de validação do certificado do servidor em ambientes *Windows*
+
+= 1.0 =
+
+Primeiro lançamento
