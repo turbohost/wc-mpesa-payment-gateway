@@ -20,8 +20,8 @@ Por meio do *Mobile M-Pesa Payment Gateway*, os compradores de sua loja podem co
 
 == Other Notes ==
 
-= Pre requisitos =
-Para usar o plugin é necessário criar uma conta no (portal de desenvolvedores do M-pesa)[https://developer.mpesa.vm.co.mz/] onde irá obter as credenciais necessárias para configurar a conta.
+= Pré requisitos =
+Para usar o plugin é necessário criar uma conta no [portal de desenvolvedores do M-pesa](https://developer.mpesa.vm.co.mz/) onde irá obter as credenciais necessárias para configurar a conta.
 
 ### Dúvidas
 
@@ -75,7 +75,7 @@ Caso a instalação automática não funcione, faça o download do plug-in aqui 
 
 Para obter credenciais, crie uma conta em https://developer.mpesa.vm.co.mz/
 
-= o que devo colocar no campo *Código do provedor de serviços*? =
+= o que devo colocar no campo Código do provedor de serviços? =
 
 * Se você estiver no ambiente de teste, use **171717**
 * Se você estiver no ambiente de produção, use código de produção fornecido pela Vodacom.

@@ -340,7 +340,7 @@ function wc_mpesa_init()
                 if ('yes' == $this->test) {
                     $response['raw'] =  $result->response;
                 }
-                if ($response['code'] == 'INS-0') {
+                if ($result->response->output_ResponseCode == 'INS-0') {
                     // Mark as paid 
                     $order->payment_complete();
                     // Reduce stock levels
