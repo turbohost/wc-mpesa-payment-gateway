@@ -405,7 +405,6 @@ function wc_mpesa_init()
         function generate_reference_id($order_id)
         {
             //generate uniq reference_id
-            $random_number = bin2hex(random_bytes(5));
             return substr($order_id . bin2hex(random_bytes(5)), 0, 10);
         }
 

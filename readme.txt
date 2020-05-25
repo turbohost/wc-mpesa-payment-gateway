@@ -14,28 +14,29 @@ Receba pagamentos de clientes Mpesa diretamente em sua loja virtual usando a API
 
 == Description ==
 
-O plugin *Mobile M-Pesa Payment Gateway* permite que você receba pagamentos diretamente em sua loja virtual através da API M-Pesa da Vodacom Moçambique.
+O plugin *Mobile M-Pesa Payment Gateway* é uma extensão para WooCommerce e WordPress que permite que você receba pagamentos diretamente em sua loja virtual através da API M-Pesa da Vodacom Moçambique.
 Por meio do *Mobile M-Pesa Payment Gateway*, os compradores de sua loja podem comprar produtos ou serviços em sua loja usando um número de telefone associado à conta M-Pesa.
 
 
 == Other Notes ==
 
-= Pré requisitos =
-Para usar o plugin é necessário criar uma conta no [portal de desenvolvedores do M-pesa](https://developer.mpesa.vm.co.mz/) onde irá obter as credenciais necessárias para configurar a conta.
+### Pré requisitos
+Para usar o plugin é necessário:
+* Ter [WooCommerce](https://wordpress.org/plugins/woocommerce) instalado.
+* Criar uma conta no [portal de desenvolvedores do M-pesa](https://developer.mpesa.vm.co.mz/) onde irá obter as credenciais necessárias para configurar a conta.
 
 ### Dúvidas
 
 Se tiver  alguma dúvida :
 
-* Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/#faq).
+* Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/plugins/wc-m-pesa-payment-gateway/#faq).
 * Utilize o nosso fórum no [Github](https://github.com/turbohost-co/wc-mpesa-payment-gateway/issues).
 * Crie um tópico no [fórum de ajuda do WordPress](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/).
-* Você pode entrar em contato pelo whatsapp ou SMS no número +258 84 8283 607.
+* Você pode entrar em contato pelo WhatsApp ou SMS no número +258 84 3670 086.
 
 ### Contribuir
 
 Você pode contribuir com o código fonte em nossa [página do GitHub](https://github.com/turbohost-co/wc-mpesa-payment-gateway).
-
 
 
 Este plugin foi desenvolvido sem nenhum incentivo da Vodacom. Nenhum dos desenvolvedores deste plugin possuem vínculos com estas duas empresas.
@@ -76,7 +77,7 @@ Caso a instalação automática não funcione, faça o download do plug-in aqui 
 
 Para obter credenciais, crie uma conta em https://developer.mpesa.vm.co.mz/
 
-= o que devo colocar no campo Código do provedor de serviços? =
+= O que devo colocar no campo Código do provedor de serviços? =
 
 * Se você estiver no ambiente de teste, use **171717**
 * Se você estiver no ambiente de produção, use código de produção fornecido pela Vodacom.
