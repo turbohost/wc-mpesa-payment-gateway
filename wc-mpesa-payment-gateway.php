@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Mobile M-Pesa Payment Gateway
+Plugin Name: Accept Mpesa Payments
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.2.0
+Version: 1.2.1
 WC requires at least: 4.0.0
-WC tested up to: 4.1.1
+WC tested up to: 5.2.1
 Author: karson <karson@turbohost.co.mz>
 Author URI: http://karsonadam.com
 
@@ -14,10 +14,15 @@ Author URI: http://karsonadam.com
     License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
-$wc_mpesa_db_version = 1.1;
+$wc_mpesa_db_version = "1.2.1";
 add_action('plugins_loaded', 'wc_mpesa_init', 0);
 add_action('plugins_loaded', 'wc_mpesa_update_check');
 register_activation_hook(__FILE__, 'wc_mpesa_install');
+/**
+ * TODO: Remove custom table functions
+ *
+ * @return void
+ */
 function  wc_mpesa_install()
 {
     global $wc_mpesa_db_version;
@@ -26,26 +31,14 @@ function  wc_mpesa_install()
 
     if (!get_option('wc_mpesa_version', $wc_mpesa_db_version)) {
 
-
-
-        $charset_collate = $wpdb->get_charset_collate();
-        $sql = "CREATE TABLE $table_name (
-        id bigint(9) NOT NULL AUTO_INCREMENT,
-        order_id bigint(20) NOT NULL,
-        phone bigint(12) NOT NULL,
-        reference_id varchar(20) NOT NULL,
-        result_code varchar(20) NULL,
-        date_created datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
-        status varchar(20) NULL,
-        PRIMARY KEY  (id)
-    ) $charset_collate;";
-
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+        $wpdb->query("DROP TABLE IF EXISTS $table_name");
 
         update_option('wc_mpesa_version', $wc_mpesa_db_version);
     }
 }
+
+
 
 function wc_mpesa_update_check()
 {
@@ -81,8 +74,8 @@ function wc_mpesa_init()
             $this->id                 = 'wc-mpesa-payment-gateway';
             $this->icon               = apply_filters('wc-mpesa_icon', plugins_url('assets/img/m-pesa-logo.png', __FILE__));
             $this->has_fields         = false;
-            $this->method_title       = __('Mobile M-PESA Payment Gateway', 'wc-mpesa-payment-gateway');
-            $this->method_description = __('Allow to pay via M-PESA', 'wc-mpesa-payment-gateway');
+            $this->method_title       = __('Accept Mpesa Payments', 'wc-mpesa-payment-gateway');
+            $this->method_description = __('Accept Mpesa Payments for WooCommerce', 'wc-mpesa-payment-gateway');
 
             // Load the settings.
             $this->init_form_fields();
@@ -125,14 +118,14 @@ function wc_mpesa_init()
                 'enabled' => array(
                     'title' => __('Enable/Disable', 'wc-mpesa-payment-gateway'),
                     'type' => 'checkbox',
-                    'label' => __('Enable Mobile M-Pesa Payment Gateway', 'wc-mpesa-payment-gateway'),
+                    'label' => __('Enable Mpesa Payments', 'wc-mpesa-payment-gateway'),
                     'default' => 'no'
                 ),
                 'title' => array(
                     'title' => __('Title', 'wc-mpesa-payment-gateway'),
                     'type' => 'text',
                     'description' => __('This controls the title which the user sees during checkout', 'wc-mpesa-payment-gateway'),
-                    'default' => __('Mobile M-Pesa Payment Gateway', 'wc-mpesa-payment-gateway'),
+                    'default' => __('Mpesa Payments', 'wc-mpesa-payment-gateway'),
                     'desc_tip'      => true,
                 ),
                 'description' => array(
@@ -142,7 +135,7 @@ function wc_mpesa_init()
                 ),
                 'api_key' => array(
                     'title' => __('API Key', 'wc-mpesa-payment-gateway'),
-                    'type' => 'text',
+                    'type' => 'password',
                     'default' => __('', 'wc-mpesa-payment-gateway')
                 ),
                 'public_key' => array(
@@ -213,7 +206,8 @@ function wc_mpesa_init()
                 wc_add_notice(__('Phone number is required!', 'wc-mpesa-payment-gateway'), 'error');
                 return false;
             }
-            if (!$mpesa_number || strlen($mpesa_number) != 9 || !preg_match('/^84[0-9]{7}$/', $mpesa_number)) {
+            //validade mpesa numbers to only accept 84 and 85 prefix ex: 84 8283607
+            if (!$mpesa_number || strlen($mpesa_number) != 9 || !preg_match('/^8[4|5][0-9]{7}$/', $mpesa_number)) {
                 wc_add_notice(__('Phone number is incorrect!', 'wc-mpesa-payment-gateway'), 'error');
                 return false;
             }
@@ -312,7 +306,6 @@ function wc_mpesa_init()
         function process_action()
         {
             session_start();
-            global $wpdb;
 
 
             $mpesa = new \Karson\MpesaPhpSdk\Mpesa();
@@ -386,17 +379,6 @@ function wc_mpesa_init()
                     $order->update_status('failed', __('Payment failed', 'wc-mpesa-payment-gateway'));
                 }
 
-                try {
-                    $wpdb->insert("{$wpdb->prefix}wc_mpesa_transactions", [
-                        'phone' => $phone,
-                        'order_id' => $order->get_id(),
-                        'reference_id' => $reference_id,
-                        'status' => $response['status'],
-                        'result_code' => $response['code'] ?? null,
-                    ]);
-                } catch (\Throwable $th) {
-                    $response['raw'] = $th->getMessage();
-                }
             }
             wp_send_json($response);
         }

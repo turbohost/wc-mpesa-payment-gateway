@@ -1,21 +1,21 @@
-=== Mobile M-Pesa Payment Gateway  ===
+=== Accept Mpesa Payments  ===
 Contributors: karson9
-Author URI: http://karsonadam.com/
+Author URI: http://turbohost.co.mz/
 Plugin URL: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
-Tags:  mpesa, m-pesa, woocommerce, mpesa api, gateway, Mobile Payments, Mozambique, mpesa online, Mpesa API Mozambique
+Tags:  mpesa, m-pesa, woocommerce, mpesa api, gateway, Mobile Payments, mpesa online, Vodacom,  Mpesa API Mozambique
 Requires at least: 5.0
-Tested up to: 5.4
+Tested up to: 5.7
 Requires PHP: 7.0
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
-Receba pagamentos de clientes Mpesa diretamente em sua loja virtual usando a API M-Pesa da Vodacom Moçambique.
+Adiciona Mpesa como método de pagamento no WooCommerce.
 
 == Description ==
 
-O plugin *Mobile M-Pesa Payment Gateway* é uma extensão para WooCommerce e WordPress que permite que você receba pagamentos diretamente em sua loja virtual através da API M-Pesa da Vodacom Moçambique.
-Por meio do *Mobile M-Pesa Payment Gateway*, os compradores de sua loja podem comprar produtos ou serviços em sua loja usando um número de telefone associado à conta M-Pesa.
+O plugin *Accept Mpesa Payments* é uma extensão para WooCommerce e WordPress que permite que você receba pagamentos diretamente em sua loja virtual através da API M-Pesa da Vodacom Moçambique.
+Por meio do *Accept Mpesa Payments*, os compradores de sua loja podem comprar produtos ou serviços em sua loja usando um número de telefone associado à conta M-Pesa.
 
 
 == Other Notes ==
@@ -48,11 +48,11 @@ Este plugin foi desenvolvido sem nenhum incentivo da Vodacom. Nenhum dos desenvo
 
 1. Faça login no seu painel do WordPress
 2. Clique em *Plugins> Adicionar novo* no menu esquerdo.
-3. Na caixa de pesquisa, digite **Mobile M-Pesa Payment Gateway**.
-4. Clique em *Instalar agora* no **Mobile M-Pesa Payment Gateway** para instalar o plug-in no seu site e em seguida clique em  *ativar* o plug-in.
+3. Na caixa de pesquisa, digite **Accept Mpesa Payments**.
+4. Clique em *Instalar agora* no **Accept Mpesa Payments** para instalar o plug-in no seu site e em seguida clique em  *ativar* o plug-in.
 5. Clique em *WooCommerce> Configurações* no menu esquerdo e clique na guia *Pagamentos*.
-6. Clique em **Mobile M-Pesa Payment Gateway** na lista dos métodos de pagamento disponíveis
-7. Defina as configurações do Mobile M-Pesa Payment Gateway usando credenciais disponíveis em https://developer.mpesa.vm.co.mz/
+6. Clique em **Accept Mpesa Payments** na lista dos métodos de pagamento disponíveis
+7. Defina as configurações do Accept Mpesa Payments usando credenciais disponíveis em https://developer.mpesa.vm.co.mz/
 
  
 
@@ -61,12 +61,12 @@ Este plugin foi desenvolvido sem nenhum incentivo da Vodacom. Nenhum dos desenvo
 Caso a instalação automática não funcione, faça o download do plug-in aqui usando o botão Download.
 
 1. Descompacte o arquivo e carregue a pasta via FTP no diretório *wp-content/plugins* da sua instalação do WordPress.
-2. Vá para *Plugins> Plugins instalados* e clique em *Ativar* no Mobile M-Pesa Payment Gateway.
+2. Vá para *Plugins> Plugins instalados* e clique em *Ativar* no Accept Mpesa Payments.
 
 == Screenshots ==
 
 
-1. Lista dos método de pagamento com o  *Mobile M-Pesa Payment Gateway* ativo
+1. Lista dos método de pagamento com o  *Accept Mpesa Payments* ativo
 2. Configuração das credenciais método de pagamento Mpesa.
 3. Página da Finalização do pagamento com o método de pagamento selecionado com o campo para digitar o número do telefone mpesa
 4. Página de pagamento com as instruções para que o cliente finalize o pagamento.
