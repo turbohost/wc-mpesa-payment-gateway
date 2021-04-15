@@ -3,7 +3,7 @@
 Plugin Name: Payment Gateway - Mpesa for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.2.1
+Version: 1.2.2
 WC requires at least: 4.0.0
 WC tested up to: 5.2.1
 Author: karson <karson@turbohost.co.mz>
@@ -14,7 +14,7 @@ Author URI: http://karsonadam.com
     License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
-$wc_mpesa_db_version = "1.2.1";
+$wc_mpesa_db_version = "1.2.2";
 add_action('plugins_loaded', 'wc_mpesa_init', 0);
 add_action('plugins_loaded', 'wc_mpesa_update_check');
 register_activation_hook(__FILE__, 'wc_mpesa_install');
@@ -47,6 +47,7 @@ function wc_mpesa_update_check()
         wc_mpesa_install();
     }
 }
+
 
 
 
@@ -118,14 +119,14 @@ function wc_mpesa_init()
                 'enabled' => array(
                     'title' => __('Enable/Disable', 'wc-mpesa-payment-gateway'),
                     'type' => 'checkbox',
-                    'label' => __('Enable Mpesa Payments', 'wc-mpesa-payment-gateway'),
+                    'label' => __('Enable Mpesa payment gateway', 'wc-mpesa-payment-gateway'),
                     'default' => 'no'
                 ),
                 'title' => array(
                     'title' => __('Title', 'wc-mpesa-payment-gateway'),
                     'type' => 'text',
                     'description' => __('This controls the title which the user sees during checkout', 'wc-mpesa-payment-gateway'),
-                    'default' => __('Mpesa Payments', 'wc-mpesa-payment-gateway'),
+                    'default' => __('Mpesa for WooCommerce', 'wc-mpesa-payment-gateway'),
                     'desc_tip'      => true,
                 ),
                 'description' => array(
@@ -177,7 +178,12 @@ function wc_mpesa_init()
                 echo wpautop(wp_kses_post($this->description));
             }
 
-            $phone = $_SESSION['wc_mpesa_phone'] ?? '';
+            if(isset($_SESSION['wc_mpesa_number'])){
+                $number = $this->wc_mpesa_validate_number($_SESSION['wc_mpesa_number']);
+            }else{
+                $number = '';
+            }
+            
 
             // I will echo() the form, but you can close PHP tags and print it directly in HTML
             echo '<fieldset id="wc-' . esc_attr($this->id) . '-cc-form" class="wc-credit-card-form wc-payment-form" style="background:transparent;">';
@@ -185,7 +191,7 @@ function wc_mpesa_init()
 
             //Use unique IDs, because other gateways could already use 
             echo '<div class="form-row form-row-wide"><label>' . esc_html__('Mpesa number', 'wc-mpesa-payment-gateway') . '<span class="required">*</span></label>
-                <input name="mpesa_number" type="tel" value="' . esc_attr($phone) . '" placeholder="' . esc_attr__('ex: 84 123 4567', 'wc-mpesa-payment-gateway') . '">
+                <input name="wc_mpesa_number" type="tel" value="' . esc_attr($number) . '" placeholder="' . esc_attr__('ex: 84 123 4567', 'wc-mpesa-payment-gateway') . '">
                 </div>';
 
             echo '<div class="clear"></div></fieldset>';
@@ -200,19 +206,29 @@ function wc_mpesa_init()
                 return false;
             }
             //validate  phone
-            $mpesa_number = filter_input(INPUT_POST, 'mpesa_number', FILTER_VALIDATE_INT);
-
-            if (!isset($mpesa_number)) {
+            $number = $this->wc_mpesa_validate_number($_POST['wc_mpesa_number']);
+            if (!$number) {
                 wc_add_notice(__('Phone number is required!', 'wc-mpesa-payment-gateway'), 'error');
                 return false;
             }
-            //validade mpesa numbers to only accept 84 and 85 prefix ex: 84 8283607
-            if (!$mpesa_number || strlen($mpesa_number) != 9 || !preg_match('/^8[4|5][0-9]{7}$/', $mpesa_number)) {
+
+            //save phone to use on payment screen and new transactions
+            session_start();
+             $_SESSION['wc_mpesa_number'] = $number;
+
+            return true;
+        }
+
+       public function wc_mpesa_validate_number($number){
+            $number = filter_var($number, FILTER_VALIDATE_INT);
+                        //validade mpesa numbers to only accept 84 and 85 prefix ex: 84 8283607
+            if (!isset($number) || strlen($number) != 9 || !preg_match('/^8[4|5][0-9]{7}$/', $number)) {
                 wc_add_notice(__('Phone number is incorrect!', 'wc-mpesa-payment-gateway'), 'error');
                 return false;
             }
-            return true;
+            return $number;
         }
+        
 
 
 
@@ -248,7 +264,7 @@ function wc_mpesa_init()
                     ],
                     'failed' => [
                         'title' => __('Payment failed!', 'wc-mpesa-payment-gateway'),
-                        'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa-payment-gateway')
+                        'description' => __('Try again or use your browser\'s back button to change the number.', 'wc-mpesa-payment-gateway')
                     ],
                     
                 ],
@@ -281,11 +297,7 @@ function wc_mpesa_init()
          */
         public function process_payment($order_id)
         {
-            session_start();
             $order = new WC_Order($order_id);
-            $phone = filter_input(INPUT_POST, 'mpesa_number', FILTER_SANITIZE_NUMBER_INT);
-            //save phone to use on new transactions
-            $_SESSION['wc_mpesa_phone'] = $phone;
 
             $checkout_url = $order->get_checkout_payment_url(true);
 
@@ -302,8 +314,16 @@ function wc_mpesa_init()
         function process_action()
         {
             session_start();
+            if (isset($_SESSION['wc_mpesa_number'])) {
+                $number = $this->wc_mpesa_validate_number($_SESSION['wc_mpesa_number']);
+            } else {
+                $number = false;
+            }
 
+            $response = [];
+            
 
+            //Initialize API
             $mpesa = new \Karson\MpesaPhpSdk\Mpesa();
             $mpesa->setApiKey($this->api_key);
             $mpesa->setPublicKey($this->public_key);
@@ -314,13 +334,12 @@ function wc_mpesa_init()
             //Update code to use wp_send_json status instead custom status to reduce redundancy
             $order = new WC_Order(filter_input(INPUT_POST, 'order_id', FILTER_VALIDATE_INT));
             $order_id = $order->get_id();
-            if ($order_id) {
+            if ($order_id && $number != false) {
                 $amount = $order->get_total();
                 $reference_id = $this->generate_reference_id($order_id);
-                $phone = "258{$_SESSION['wc_mpesa_phone']}";
-                $response = [];
+                $number = "258${number}";
                 try {
-                    $result = $mpesa->c2b($order_id, $phone, $amount, $reference_id, $this->service_provider);
+                    $result = $mpesa->c2b($order_id, $number, $amount, $reference_id, $this->service_provider);
                 } catch (\Exception $e) {
                     $response['status'] = 'failed';
                     if (WP_DEBUG) {

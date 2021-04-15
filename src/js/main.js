@@ -1,9 +1,7 @@
 import axios from "axios";
 import Vue from "vue/dist/vue.esm";
 
-
 const TransactionTimeoutTime = 60000;
-//TODO: implement visual counter
 
 let app = new Vue({
   el: '#app',
@@ -12,7 +10,7 @@ let app = new Vue({
       timerChecker: null,
       timeoutChecker: null,
       return_url: '#',
-      disabled: false,
+      btnDisabled: false,
       error: null,
       payment_text: payment_text
     },
@@ -31,16 +29,15 @@ let app = new Vue({
           setTimeout(() => (window.location.href = this.return_url), 5000);
         } else if (response.data.status == 'failed') {
           this.status = payment_text.status.failed;
-          this.error = response.data.error_message;
+          this.btnDisabled = false;
           clearInterval(this.timerChecker);
         }
       }.bind(this)).catch((error) => {
         this.status = payment_text.status.failed;
-        this.error = response.data.error_message;
       })
     },
     tooglePaymentButton: function () {
-      this.disabled = (!this.disabled)
+      this.btnDisabled = (!this.btnDisabled)
     },
     checkTimeout: function () {
       this.timeoutChecker = setTimeout(() => {

@@ -4,7 +4,7 @@
     <div v-if="error" class="payment-error" role="error">{{error}}</div>
     <div class="payment-description" role="alert" v-html="status.description"></div>
   </div>
-  <button class="payment-btn" v-bind="{ disabled }" v-on:click='pay(<?= $data ?>)'>
+  <button class="payment-btn" v-bind="{ btnDisabled }" v-on:click='pay(<?= $data ?>)'>
     <?= __('Pay', 'wc-mpesa-payment-gateway') ?>
   </button>
 </div>
