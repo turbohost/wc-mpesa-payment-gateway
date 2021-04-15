@@ -2,3 +2,5 @@ languages/wc-mpesa-payment-gateway-backup-*
 languages/wc-mpesa-payment-gateway-pt_PT-backup-*
 languages/wc-mpesa-payment-gateway-pt_BR-backup-*
 vendor
+node_modules
+.cache

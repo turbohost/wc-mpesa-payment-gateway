@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Accept Mpesa Payments
+Plugin Name: Payment Gateway - Mpesa for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
 Version: 1.2.1
@@ -74,7 +74,7 @@ function wc_mpesa_init()
             $this->id                 = 'wc-mpesa-payment-gateway';
             $this->icon               = apply_filters('wc-mpesa_icon', plugins_url('assets/img/m-pesa-logo.png', __FILE__));
             $this->has_fields         = false;
-            $this->method_title       = __('Accept Mpesa Payments', 'wc-mpesa-payment-gateway');
+            $this->method_title       = __('Mpesa for WooCommerce', 'wc-mpesa-payment-gateway');
             $this->method_description = __('Accept Mpesa Payments for WooCommerce', 'wc-mpesa-payment-gateway');
 
             // Load the settings.
@@ -225,17 +225,8 @@ function wc_mpesa_init()
                 return;
             }
             // Load only on specified pages
-            /**
-             * Add styles and scripts
-             */
-            if (WP_DEBUG) {
-                wp_enqueue_script('vue', plugin_dir_url(__FILE__) . '/assets/js/vue.js', [], false, true);
-            } else {
-                wp_enqueue_script('vue', plugin_dir_url(__FILE__) . '/assets/js/vue.min.js', [], false, true);
-            }
 
-            wp_enqueue_script('axios', plugin_dir_url(__FILE__) . '/assets/js/axios.min.js', array('vue'), false, true);
-            wp_enqueue_script('payment', plugin_dir_url(__FILE__) . '/assets/js/payment.js', array('vue', 'axios'), false, true);
+            wp_enqueue_script('payment', plugin_dir_url(__FILE__) . '/assets/js/main.js', array(), false, true);
 
             wp_localize_script('payment', 'payment_text', [
                 'status' => [
@@ -259,7 +250,11 @@ function wc_mpesa_init()
                         'title' => __('Payment failed!', 'wc-mpesa-payment-gateway'),
                         'description' => __('Use your browser\'s back button and try again.', 'wc-mpesa-payment-gateway')
                     ],
+                    
                 ],
+                'buttons' => [
+                    'pay' => __('Pay', 'wc-mpesa-payment-gateway'),
+                ]
             ]);
             wp_enqueue_style('style', plugin_dir_url(__FILE__) . '/assets/css/style.css', false, false, 'all');
         }
@@ -269,6 +264,7 @@ function wc_mpesa_init()
             // modify post object here
             $order = new WC_Order($order_id);
             $return_url = $this->get_return_url($order);
+            $data = json_encode(['order_id' => $order_id, 'return_url'=> $return_url]);
             require plugin_dir_path(__FILE__) . '/templates/payment.php';
         }
 
@@ -327,7 +323,17 @@ function wc_mpesa_init()
                     $result = $mpesa->c2b($order_id, $phone, $amount, $reference_id, $this->service_provider);
                 } catch (\Exception $e) {
                     $response['status'] = 'failed';
-                    $response['raw'] =  $e->getMessage();
+                    if (WP_DEBUG) {
+                        $response['error_message'] = $e->getMessage();
+                        $response['raw'] =  $result->response;
+                        $response['request'] = [
+                            'order_id' => $order_id,
+                             'phone' => $phone,
+                             'amount' => $amount,
+                             'reference_id' => $reference_id,
+                             'service_provider' => $this->service_provider,
+                        ];
+                    }
                     return wp_send_json_error($response);
                 }
                 if ('yes' == $this->test) {

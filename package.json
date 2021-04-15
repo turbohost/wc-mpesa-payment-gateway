@@ -1,0 +1,28 @@
+{
+  "name": "wc-mpesa-payment-gateway",
+  "version": "1.0.0",
+  "description": "Accept Mpesa Payments",
+  "main": "false",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "parcel watch src/js/main.js -d assets/js/",
+    "build": "parcel build src/js/main.js -d assets/js/ --experimental-scope-hoisting"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turbohost-co/wc-mpesa-payment-gateway.git"
+  },
+  "author": "karson",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/turbohost-co/wc-mpesa-payment-gateway/issues"
+  },
+  "homepage": "https://github.com/turbohost-co/wc-mpesa-payment-gateway#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "vue": "^2.6.12"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}

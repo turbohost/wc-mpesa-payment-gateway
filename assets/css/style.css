@@ -17,7 +17,9 @@
 
 .payment-description,
 .payment-error {
-  text-align: center;
+  text-align: left;
+  max-width: 450px;
+  margin: auto;
 }
 
 .payment-btn {
