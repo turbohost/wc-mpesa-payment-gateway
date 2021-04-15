@@ -4,4 +4,5 @@ languages/wc-mpesa-payment-gateway-pt_BR-backup-*
 vendor
 node_modules
 .cache
+.vscode
 !/.gitignore
