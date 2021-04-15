@@ -33,7 +33,7 @@ Se tiver  alguma dúvida :
 * Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/plugins/wc-m-pesa-payment-gateway/#faq).
 * Utilize o nosso fórum no [Github](https://github.com/turbohost-co/wc-mpesa-payment-gateway/issues).
 * Crie um tópico no [fórum de ajuda do WordPress](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/).
-* Você pode entrar em contato pelo WhatsApp ou SMS no número +258 84 3670 086.
+* Você pode entrar em contato pelo número +258 84 3670 086.
 
 ### Contribuir
 
