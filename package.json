@@ -20,7 +20,7 @@
   "homepage": "https://github.com/turbohost-co/wc-mpesa-payment-gateway#readme",
   "dependencies": {
     "axios": "^0.24.0",
-    "vue": "^2.6.14"
+    "vue": "^3.2.37"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.5"
