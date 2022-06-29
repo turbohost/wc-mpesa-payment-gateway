@@ -1,6 +1,7 @@
 # Directories
 .wordpress-org
 .github
+.git
 .cache
 node_modules
 src
