@@ -88,7 +88,7 @@ Se ao fazer o pedido de pagamento, não recebe nenhuma notificação e da timeou
 
 == Changelog ==
 
-= 1.3.0 =
+= 1.3.4 =
 
 Correção de bugs
 
