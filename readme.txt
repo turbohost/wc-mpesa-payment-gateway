@@ -90,6 +90,10 @@ Se ao fazer o pedido de pagamento, não recebe nenhuma notificação e da timeou
 
 = 1.3.0 =
 
+Correção de bugs
+
+= 1.3.0 =
+
 * Correção de bugs
 * Melhoria na exibição das respostas das solicitações de pagamentos
 
