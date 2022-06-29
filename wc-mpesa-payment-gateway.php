@@ -330,12 +330,15 @@ function wc_mpesa_init()
 
             $response = [];
             
-            $mpesa = new Mpesa([
-                'public_key' => $this->public_key,
-                'api_key' => $this->api_key,
-                'service_provider_code' => $this->service_provider,
-                'env' => $this->test?'test':'live'
-            ]);
+            $mpesa = new Mpesa();
+
+            $mpesa->setPublicKey($this->public_key);
+            $mpesa->setApiKey($this->api_key);
+            $mpesa->setServiceProviderCode($this->service_provider);
+            if (!$this->test) {
+                $mpesa->setEnv('live');
+            }
+            
 
    
             
