@@ -32,6 +32,7 @@ Se tiver  alguma dúvida :
 
 * Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/plugins/wc-m-pesa-payment-gateway/#faq).
 * Crie um tópico no [fórum de ajuda do WordPress](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/).
+* Envie uma mensagem no grupo do WhatsApp ["WordPress Moçambique"](https://chat.whatsapp.com/EAxWq4Pljx9KH6Dc2VhxaU).
 
 ### Contribuir
 
