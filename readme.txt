@@ -4,9 +4,9 @@ Author URI: http://turbohost.co.mz/
 Plugin URL: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Tags:  mpesa, m-pesa, woocommerce, mpesa api, gateway, Mobile Payments, mpesa online, Vodacom,  Mpesa API Mozambique
 Requires at least: 5.0
-Tested up to: 5.7.1
-Requires PHP: 7.0
-Stable tag: 1.2.2
+Tested up to: 6.0
+Requires PHP: 7.1
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -31,9 +31,7 @@ Para usar o plugin é necessário:
 Se tiver  alguma dúvida :
 
 * Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/plugins/wc-m-pesa-payment-gateway/#faq).
-* Utilize o nosso fórum no [Github](https://github.com/turbohost-co/wc-mpesa-payment-gateway/issues).
 * Crie um tópico no [fórum de ajuda do WordPress](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/).
-* Você pode entrar em contato pelo número +258 84 3670 086.
 
 ### Contribuir
 

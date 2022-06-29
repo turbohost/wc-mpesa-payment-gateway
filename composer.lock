@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d4c6c885bad634d7cd8928d8f65657e",
+    "content-hash": "6dbb0f31a8d09c75ce7ed92b3dcc4dbc",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -166,16 +166,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.8.1",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1"
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/35ea11d335fd638b5882ff1725228b3d35496ab1",
-                "reference": "35ea11d335fd638b5882ff1725228b3d35496ab1",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc960a912984efb74d0a90222870c72c87f10c91",
+                "reference": "dc960a912984efb74d0a90222870c72c87f10c91",
                 "shasum": ""
             },
             "require": {
@@ -235,9 +235,9 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/1.8.1"
+                "source": "https://github.com/guzzle/psr7/tree/1.8.2"
             },
-            "time": "2021-03-21T16:25:00+00:00"
+            "time": "2021-04-26T09:17:50+00:00"
         },
         {
             "name": "karson/mpesa-php-sdk",
@@ -291,6 +291,74 @@
                 "source": "https://github.com/karson/mpesa-php-sdk/tree/1.3.0"
             },
             "time": "2020-11-05T21:37:07+00:00"
+        },
+        {
+            "name": "paymentsds/mpesa",
+            "version": "0.1.1-alpha",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paymentsds/mpesa-php-sdk.git",
+                "reference": "ffb334dbdce8d23f07155016ad0951cff74d258f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paymentsds/mpesa-php-sdk/zipball/ffb334dbdce8d23f07155016ad0951cff74d258f",
+                "reference": "ffb334dbdce8d23f07155016ad0951cff74d258f",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "7.*",
+                "php": ">= 7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "6.*",
+                "vlucas/phpdotenv": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Paysuite\\MPesa\\": "src"
+                },
+                "files": [
+                    "src/Paymentsds/MPesa/Environment.php",
+                    "src/Paymentsds/MPesa/Operation.php",
+                    "src/Paymentsds/MPesa/Constants.php",
+                    "src/Paymentsds/MPesa/Configuration.php",
+                    "src/Paymentsds/MPesa/Service.php",
+                    "src/Paymentsds/MPesa/Client.php",
+                    "src/Paymentsds/MPesa/ErrorType.php",
+                    "src/Paymentsds/MPesa/Response.php",
+                    "src/Paymentsds/MPesa/Exception/AuthenticationException.php",
+                    "src/Paymentsds/MPesa/Exception/InvalidHostException.php",
+                    "src/Paymentsds/MPesa/Exception/InvalidReceiverException.php",
+                    "src/Paymentsds/MPesa/Exception/TimeoutException.php",
+                    "src/Paymentsds/MPesa/Exception/ValidationException.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Edson Michaque",
+                    "email": "edson@michaque.com"
+                },
+                {
+                    "name": "Elton Laice",
+                    "email": "me@eltonlaice.com"
+                },
+                {
+                    "name": "Karson Adam",
+                    "email": "karson@turbohost.co.mz"
+                }
+            ],
+            "description": "PHP client library for MPesa API",
+            "support": {
+                "issues": "https://github.com/paymentsds/mpesa-php-sdk/issues",
+                "source": "https://github.com/paymentsds/mpesa-php-sdk/tree/v0.1.0-alpha14"
+            },
+            "time": "2021-07-02T15:30:40+00:00"
         },
         {
             "name": "psr/http-client",
@@ -445,7 +513,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "paymentsds/mpesa": 15
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

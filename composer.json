@@ -1,5 +1,6 @@
 {
     "require": {
-        "karson/mpesa-php-sdk": "^1.2"
+        "karson/mpesa-php-sdk": "^1.2",
+        "paymentsds/mpesa": "0.1.1-alpha"
     }
 }

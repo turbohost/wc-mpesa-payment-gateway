@@ -1,0 +1,15 @@
+# Directories
+.wordpress-org
+.github
+.cache
+node_modules
+src
+
+
+# Files
+/.gitattributes
+/.gitignore
+/package-lock.json
+/package.json
+/composer.json
+/composer.lock
