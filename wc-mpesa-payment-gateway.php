@@ -10,8 +10,8 @@ Author: TurboHost <suporte@turbohost.co.mz>
 Author URI: http://turbohost.co.mz
 
     Copyright: © 2022 TurboHost <suporte@turbohost.co.mz>.
-    License: GNU General Public License v2
-    License URI: http://www.gnu.org/licenses/gpl-2.0.html
+    License: GNU General Public License v3.0
+    License URI: https://www.gnu.org/licenses/gpl-3.0.html
 */
 require 'vendor/autoload.php';
 
