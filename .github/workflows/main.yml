@@ -5,7 +5,7 @@ on:
     - 1.*
 jobs:
   tag:
-    name: New tag
+    name: Build and deploy plugin
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -14,6 +14,6 @@ jobs:
       with:
         WORDPRESS_PASSWORD: ${{ secrets.WORDPRESS_PASSWORD }}
         WORDPRESS_USERNAME: ${{ secrets.WORDPRESS_USERNAME }}
-        SLUG: wc-mpesa-payment-gateway
+        SLUG: wc-m-pesa-payment-gateway
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
