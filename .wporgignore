@@ -3,8 +3,8 @@
 .github
 .git
 .cache
-node_modules
-src
+/node_modules
+/src
 
 
 # Files
