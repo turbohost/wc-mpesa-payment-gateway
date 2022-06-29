@@ -6,7 +6,7 @@ Tags:  mpesa, m-pesa, woocommerce, mpesa api, gateway, Mobile Payments, mpesa on
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.1
-Stable tag: 1.2.6
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
  
@@ -87,9 +87,14 @@ Se ao fazer o pedido de pagamento, não recebe nenhuma notificação e da timeou
 
 == Changelog ==
 
+= 1.3.0 =
+
+* Correção de bugs
+* Melhoria na exibição das respostas das solicitações de pagamentos
+
 = 1.2.1 = 
 
-Correção de bug na validação de prefixos mpesa e aprimoramento da performance
+Correção de bug na validação de prefixos Mpesa e aprimoramento da performance
 
 = 1.2 =
 

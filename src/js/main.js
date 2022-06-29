@@ -29,6 +29,7 @@ let app = new Vue({
           setTimeout(() => (window.location.href = this.return_url), 5000);
         } else if (response.data.status == 'failed') {
           this.status = payment_text.status.failed;
+          this.error = response.data.message
           this.btnDisabled = false;
           clearInterval(this.timerChecker);
         }

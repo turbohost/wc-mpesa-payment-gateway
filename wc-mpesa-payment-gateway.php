@@ -14,6 +14,8 @@ Author URI: http://karsonadam.com
     License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 require 'vendor/autoload.php';
+
+use Karson\MpesaPhpSdk\Mpesa;
 use Paymentsds\MPesa\Client;
 use Paymentsds\MPesa\Environment;
 
@@ -330,17 +332,14 @@ function wc_mpesa_init()
 
             $response = [];
             
+            $mpesa = new Mpesa([
+                'public_key' => $this->public_key,
+                'api_key' => $this->api_key,
+                'service_provider_code' => $this->service_provider,
+                'env' => $this->test?'test':'live'
+            ]);
 
-            //Initialize API
-            $client = new Client([
-                'apiKey' => $this->api_key,             // API Key
-                'publicKey' => $this->public_key,          // Public Key
-                'serviceProviderCode' => $this->service_provider, // input_ServiceProviderCode
-                'debugging' => false,
-                'environment' => 'yes' != $this->test??Environment::PRODUCTION
-             
-             ]);
-
+   
             
             $order = new WC_Order(filter_input(INPUT_POST, 'order_id', FILTER_VALIDATE_INT));
             $order_id = $order->get_id();
@@ -348,37 +347,15 @@ function wc_mpesa_init()
                 $amount = $order->get_total();
                 $reference_id = $this->generate_reference_id($order_id);
                 $number = "258${number}";
-                try {
-                    $paymentData = [
-                        'from' => $number,       // input_CustomerMSISDN
-                        'reference' => $reference_id,      // input_ThirdPartyReference
-                        'transaction' => $order_id, // input_TransactionReference
-                        'amount' => $amount             // input_Amount
-                     ];
-                    $result = $client->receive($paymentData);
-                } catch (\Exception $e) {
-                    $response['status'] = 'failed';
-                    if (WP_DEBUG) {
-                        $response['error_message'] = $e->getMessage();
-                        $response['raw'] =  $result->response;
-                        $response['request'] = [
-                            'order_id' => $order_id,
-                             'phone' => $number,
-                             'amount' => $amount,
-                             'reference_id' => $reference_id,
-                             'service_provider' => $this->service_provider,
-                        ];
-                    }
-                    return wp_send_json_error($response);
-                }
-                if ('yes' == $this->test) {
-                    $response['raw'] =  $result->response;
-                }
-                if ($result->success) {
+
+                $result =  $mpesa->c2b($order_id, $number, $amount, $reference_id);
+                $result = $result->response;
+
+                $response['status'] = 'failed';
+                $response['message'] = "Ocorreu um erro";
+                if ($result->output_ResponseCode == 'INS-0') {
                     // Mark as paid
                     $order->payment_complete();
-                    // Reduce stock levels
-                    $order->reduce_order_stock();
 
                     // some notes to customer (replace true with false to make it private)
                     $order->add_order_note('Your order is paid! Thank you!', true);
@@ -388,32 +365,128 @@ function wc_mpesa_init()
                 } else {
                     // Mark as Failed
                     $response['status'] = 'failed';
-                    switch ($result->code) {
-                            //show detailed error message
-                        case 'INS-13':
-                            $error_message  = __('Invalid Shortcode Used!', 'wc-mpesa-payment-gateway');
-                            break;
-                        case 'INS-16':
-                            $error_message  = __('Unable to handle the request due to a temporary overloading!', 'wc-mpesa-payment-gateway');
-                            break;
-                        case 'INS-996':
-                            $error_message  = __('Customer Account Status Not Active!', 'wc-mpesa-payment-gateway');
-                            break;
-                        case 'INS-2001':
-                            $error_message  = __('Initiator authentication error!', 'wc-mpesa-payment-gateway');
-                            break;
-                        case 'INS-2006':
-                            $error_message  = __('Insufficient balance!', 'wc-mpesa-payment-gateway');
-                            break;
-                        default:
-                            break;
+                    $message = $this->getResponseMessage($result->output_ResponseCode);
+                    if (isset($result->output_error)) {
+                        $message = $result->output_error;
                     }
-                 
-                    $response['error_message'] = $error_message;
+                    $response['status_code'] = $result->output_ResponseCode;
+                    $response['message'] = $message;
                     $order->update_status('failed', __('Payment failed', 'wc-mpesa-payment-gateway'));
                 }
             }
             wp_send_json($response);
+        }
+
+        public function getResponseMessage($error_code)
+        {
+            switch ($error_code) {
+                //show detailed error message
+  
+                case 'INS-0':
+                    $error_message  = 'Requisição executada com sucesso';
+                    break;
+                case 'INS-1':
+                    $error_message  = 'Erro interno';
+                    break;
+                case 'INS-2':
+                    $error_message  = 'Chave da API inválida';
+                    break;
+                case 'INS-4':
+                    $error_message  = 'Usuário não está ativo';
+                    break;
+                case 'INS-5':
+                    $error_message  = 'Transação cancelada pelo cliente';
+                    break;
+                case 'INS-6':
+                    $error_message  = 'Falha na transação';
+                    break;
+                case 'INS-9':
+                    $error_message  = 'Tempo de solicitação esgotado';
+                    break;
+                case 'INS-10':
+                    $error_message  = 'Transação duplicada';
+                    break;
+                case 'INS-13':
+                    $error_message  = 'Short Code inválido';
+                    break;
+                case 'INS-14':
+                    $error_message  = 'Referência inválida';
+                    break;
+                case 'INS-15':
+                    $error_message  = 'Quantidade inválida';
+                    break;
+                case 'INS-16':
+                    $error_message  = 'Incapaz de lidar com a solicitação devido a uma sobrecarga temporária';
+                    break;
+                case 'INS-17':
+                    $error_message  = 'Referência de transação inválida. O comprimento deve estar entre 1 e 20.';
+                    break;
+                case 'INS-18':
+                    $error_message  = 'ID da transação  inválido';
+                    break;
+                case 'INS-19':
+                    $error_message  = 'Referência inválida';
+                    break;
+                case 'INS-20':
+                    $error_message  = 'Nem todos os parâmetros foram  fornecidos. Por favor, tente novamente.';
+                    break;
+                case 'INS-21':
+                    $error_message  = 'As validações de parâmetros falharam. Por favor, tente novamente.';
+                    break;
+                case 'INS-22':
+                    $error_message  = 'Tipo de operação inválido';
+                    break;
+                case 'INS-23':
+                    $error_message  = 'Status desconhecido. Entre em contato com o suporte M-Pesa';
+                    break;
+                case 'INS-24':
+                    $error_message  = 'Iniciador inválido';
+                    break;
+                case 'INS-25':
+                    $error_message  = 'SecurityCredential inválida';
+                    break;
+                case 'INS-26':
+                    $error_message  = 'Não autorizado';
+                    break;
+                case 'INS-993':
+                    $error_message  = 'Débito direto ausente';
+                    break;
+                case 'INS-994':
+                    $error_message  = 'Débito direto já existe';
+                    break;
+                case 'INS-995':
+                    $error_message  = 'O perfil do cliente tem problemas';
+                    break;
+                case 'INS-996':
+                    $error_message  = 'Conta do cliente não ativa';
+                    break;
+                case 'INS-997':
+                    $error_message  = 'Linking Transaction não encontrado';
+                    break;
+                case 'INS-998':
+                    $error_message  = 'Mercado inválido';
+                    break;
+                case 'INS-2001':
+                    $error_message  = 'Erro de autenticação do iniciador';
+                    break;
+                case 'INS-2002':
+                    $error_message  = 'Receptor inválido';
+                    break;
+                case 'INS-2006':
+                    $error_message  = 'Saldo insuficiente';
+                    break;
+                case 'INS-2051':
+                    $error_message  = 'Número Mpesa inválido.';
+                    break;
+                case 'INS-2057':
+                    $error_message  = 'Código do idioma inválido.';
+                    break;
+                default:
+                    $error_message  = 'Erro no pagamento!';
+                    break;
+        }
+
+            return $error_message;
         }
 
 

@@ -13,4 +13,5 @@
 /package-lock.json
 /package.json
 /composer.json
-/composer.lock
+/composer-lock.json
+/CODE_OF_CONDUCT.md
