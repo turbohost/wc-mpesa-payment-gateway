@@ -24,7 +24,7 @@ Por meio do *Mpesa for WooCommerce*, os compradores de sua loja podem comprar pr
 Para usar o plugin é necessário:
 * Ter [WooCommerce](https://wordpress.org/plugins/woocommerce) instalado.
 * Criar uma conta no [portal de desenvolvedores do M-pesa](https://developer.mpesa.vm.co.mz/) onde irá obter as credenciais necessárias para configurar a conta.
-* Solicite ao provedor de hospedagem que abra a conexão de saída no firewall para a porta *18352*. 
+* Solicite ao provedor de hospedagem que abra a conexão de saída no firewall para a porta *18352*. Caso esteja a usar qualquer dos planos de hospedagem da [TurboHost](https://turbohost.co.mz), a porta está aberta por padrão.
 
 ### Dúvidas
 
