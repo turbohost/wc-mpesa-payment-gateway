@@ -3,7 +3,7 @@
 Plugin Name: Payment Gateway - Mpesa for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.3.3
+Version: 1.3.4
 WC requires at least: 4.0.0
 WC tested up to: 6.6.1
 Author: TurboHost <suporte@turbohost.co.mz>
@@ -17,7 +17,7 @@ require 'vendor/autoload.php';
 
 use Karson\MpesaPhpSdk\Mpesa;
 
-$wc_mpesa_db_version = "1.3.2";
+$wc_mpesa_db_version = "1.3.4";
 add_action('plugins_loaded', 'wc_mpesa_init', 0);
 add_action('plugins_loaded', 'wc_mpesa_update_check');
 register_activation_hook(__FILE__, 'wc_mpesa_install');
@@ -136,7 +136,7 @@ function wc_mpesa_init()
                 ),
                 'api_key' => array(
                     'title' => __('API Key', 'wc-mpesa-payment-gateway'),
-                    'type' => 'password',
+                    'type' => 'text',
                     'default' => __('', 'wc-mpesa-payment-gateway')
                 ),
                 'public_key' => array(
@@ -335,7 +335,8 @@ function wc_mpesa_init()
             $mpesa->setPublicKey($this->public_key);
             $mpesa->setApiKey($this->api_key);
             $mpesa->setServiceProviderCode($this->service_provider);
-            if (!$this->test) {
+            
+            if ($this->test != 'yes') {
                 $mpesa->setEnv('live');
             }
             
@@ -375,6 +376,7 @@ function wc_mpesa_init()
                     $order->update_status('failed', __('Payment failed', 'wc-mpesa-payment-gateway'));
                 }
             }
+            $response['debug'] = $this->test;
             wp_send_json($response);
         }
 
