@@ -17,7 +17,7 @@ require 'vendor/autoload.php';
 
 use Karson\MpesaPhpSdk\Mpesa;
 
-$wc_mpesa_db_version = "1.3.4";
+$wc_mpesa_db_version = "1.3.5";
 add_action('plugins_loaded', 'wc_mpesa_init', 0);
 add_action('plugins_loaded', 'wc_mpesa_update_check');
 register_activation_hook(__FILE__, 'wc_mpesa_install');
