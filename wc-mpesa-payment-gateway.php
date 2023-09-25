@@ -3,7 +3,7 @@
 Plugin Name: Payment Gateway - Mpesa for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.4.0
+Version: 1.4.1
 WC requires at least: 4.0.0
 WC tested up to: 8.8.1
 Author: TurboHost <suporte@turbohost.co.mz>
@@ -17,7 +17,7 @@ require 'vendor/autoload.php';
 
 use Karson\MpesaPhpSdk\Mpesa;
 
-$wc_mpesa_db_version = "1.3.5";
+$wc_mpesa_db_version = "1.4.1";
 add_action('plugins_loaded', 'wc_mpesa_init', 0);
 add_action('plugins_loaded', 'wc_mpesa_update_check');
 register_activation_hook(__FILE__, 'wc_mpesa_install');
@@ -30,12 +30,8 @@ function wc_mpesa_install()
 {
     global $wc_mpesa_db_version;
     global $wpdb;
-    $table_name = $wpdb->prefix . "wc_mpesa_transactions";
-
     if (!get_option('wc_mpesa_version', $wc_mpesa_db_version)) {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        $wpdb->query("DROP TABLE IF EXISTS $table_name");
-
         update_option('wc_mpesa_version', $wc_mpesa_db_version);
     }
 }
@@ -104,8 +100,8 @@ function wc_mpesa_init()
             /**
              * Set a minimum order amount for checkout
              */
-            add_action('woocommerce_checkout_process', 'wc_minimum_order_amount');
-            add_action('woocommerce_before_cart', 'wc_minimum_order_amount');
+            add_action('woocommerce_checkout_process', [$this, 'wc_minimum_order_amount']);
+            add_action('woocommerce_before_cart', [$this, 'wc_minimum_order_amount']);
         }
 
 
