@@ -4,12 +4,12 @@ Author URI: http://turbohost.co.mz/
 Plugin URL: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Tags:  mpesa, woocommerce, payment gateway, Vodacom,  Mpesa API Mozambique
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.3
 Requires PHP: 7.1
-Stable tag: 1.3.5
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
- 
+
 Adiciona Mpesa como método de pagamento no WooCommerce.
 
 == Description ==
@@ -41,7 +41,7 @@ Você pode contribuir com o código fonte em nossa [página do GitHub](https://g
 
 Este plugin foi desenvolvido sem nenhum incentivo da Vodacom. Nenhum dos desenvolvedores deste plugin possuem vínculos com estas duas empresas.
 
- 
+
 == Installation ==
 
 ### Instalação automática
@@ -54,7 +54,7 @@ Este plugin foi desenvolvido sem nenhum incentivo da Vodacom. Nenhum dos desenvo
 6. Clique em **Mpesa for WooCommerce** na lista dos métodos de pagamento disponíveis
 7. Defina as configurações do Mpesa for WooCommerce usando credenciais disponíveis em https://developer.mpesa.vm.co.mz/
 
- 
+
 
 ### Instalação manual
 
@@ -97,7 +97,7 @@ Correção de bugs
 * Correção de bugs
 * Melhoria na exibição das respostas das solicitações de pagamentos
 
-= 1.2.1 = 
+= 1.2.1 =
 
 Correção de bug na validação de prefixos Mpesa e aprimoramento da performance
 

@@ -3,9 +3,9 @@
 Plugin Name: Payment Gateway - Mpesa for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.3.5
+Version: 1.4.0
 WC requires at least: 4.0.0
-WC tested up to: 6.6.1
+WC tested up to: 8.8.1
 Author: TurboHost <suporte@turbohost.co.mz>
 Author URI: http://turbohost.co.mz
 
@@ -70,6 +70,10 @@ function wc_mpesa_init()
      */
     class WC_Gateway_MPESA extends WC_Payment_Gateway
     {
+        public $api_key;
+        public $public_key;
+        public $service_provider;
+        public $test;
         public function __construct()
         {
             $this->id                 = 'wc-mpesa-payment-gateway';
@@ -183,7 +187,7 @@ function wc_mpesa_init()
             } else {
                 $number = '';
             }
-            
+
 
             // I will echo() the form, but you can close PHP tags and print it directly in HTML
             echo '<fieldset id="wc-' . esc_attr($this->id) . '-cc-form" class="wc-credit-card-form wc-payment-form" style="background:transparent;">';
@@ -229,7 +233,7 @@ function wc_mpesa_init()
             }
             return $number;
         }
-        
+
 
 
 
@@ -267,7 +271,7 @@ function wc_mpesa_init()
                         'title' => __('Payment failed!', 'wc-mpesa-payment-gateway'),
                         'description' => __('Try again or use your browser\'s back button to change the number.', 'wc-mpesa-payment-gateway')
                     ],
-                    
+
                 ],
                 'buttons' => [
                     'pay' => __('Pay', 'wc-mpesa-payment-gateway'),
@@ -281,14 +285,14 @@ function wc_mpesa_init()
             // modify post object here
             $order = new WC_Order($order_id);
             $return_url = $this->get_return_url($order);
-            $data = json_encode(['order_id' => $order_id, 'return_url'=> $return_url]);
+            $data = json_encode(['order_id' => $order_id, 'return_url' => $return_url]);
             $html_output = "<div class='payment-container' id='app'>
             <div>
               <h4 class='payment-title' v-cloak>{{status.title}}</h4>
               <div v-if='error' class='payment-error' role='error'>{{error}}</div>
               <div class='payment-description' role='alert' v-html='status.description'></div>
             </div>
-            <button class='payment-btn' v-bind='{ btnDisabled }' v-on:click='pay($data)'>".__('Pay', 'wc-mpesa-payment-gateway')."</button></div>";
+            <button class='payment-btn' v-bind='{ btnDisabled }' v-on:click='pay($data)'>" . __('Pay', 'wc-mpesa-payment-gateway') . "</button></div>";
             echo $html_output;
         }
 
@@ -329,26 +333,26 @@ function wc_mpesa_init()
             }
 
             $response = [];
-            
+
             $mpesa = new Mpesa();
 
             $mpesa->setPublicKey($this->public_key);
             $mpesa->setApiKey($this->api_key);
             $mpesa->setServiceProviderCode($this->service_provider);
-            
+
             if ($this->test != 'yes') {
                 $mpesa->setEnv('live');
             }
-            
 
-   
-            
+
+
+
             $order = new WC_Order(filter_input(INPUT_POST, 'order_id', FILTER_VALIDATE_INT));
             $order_id = $order->get_id();
             if ($order_id && $number != false) {
                 $amount = $order->get_total();
                 $reference_id = $this->generate_reference_id($order_id);
-                $number = "258${number}";
+                $number = "258{$number}";
 
                 $result =  $mpesa->c2b($order_id, $number, $amount, $reference_id);
                 $result = $result->response;
@@ -384,7 +388,7 @@ function wc_mpesa_init()
         {
             switch ($error_code) {
                 //show detailed error message
-  
+
                 case 'INS-0':
                     $error_message  = 'Requisição executada com sucesso';
                     break;
@@ -487,7 +491,7 @@ function wc_mpesa_init()
                 default:
                     $error_message  = 'Erro no pagamento!';
                     break;
-        }
+            }
 
             return $error_message;
         }
