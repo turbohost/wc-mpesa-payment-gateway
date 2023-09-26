@@ -88,6 +88,9 @@ Se ao fazer o pedido de pagamento, não recebe nenhuma notificação e da timeou
 
 == Changelog ==
 
+= 1.4.1 =
+Adição da compatibilidade com a versão do PHP 8.2
+
 = 1.3.4 =
 
 Correção de bugs
