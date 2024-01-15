@@ -2,25 +2,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Wc Mpesa Payment Gateway\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-23 15:59+0000\n"
-"PO-Revision-Date: 2024-01-15 05:14+0000\n"
+"POT-Creation-Date: 2021-04-15 18:45+0000\n"
+"PO-Revision-Date: 2024-01-15 05:16+0000\n"
 "Last-Translator: \n"
-"Language-Team: Português do Brasil\n"
-"Language: pt_BR\n"
+"Language-Team: Português (AO90)\n"
+"Language: pt_PT_ao90\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.6.6; wp-6.4.2"
+"X-Loco-Version: 2.6.6; wp-6.4.2\n"
+"X-Loco-Fallback: pt_PT\n"
+"X-Loco-Template: languages/wc-mpesa-payment-gateway-pt_PT.po\n"
+"X-Loco-Template-Mode: PO"
 
 #: wc-mpesa-payment-gateway.php:174
 msgid "<br/> TEST MODE ENABLED."
-msgstr "<br/> MODO DE TESTE ATIVO."
+msgstr "<br/> MODO DE TESTE ATIVO"
 
 #: wc-mpesa-payment-gateway.php:79
 msgid "Accept Mpesa Payments for WooCommerce"
-msgstr "Aceitar Pagamentos com MPesa"
+msgstr "Receba Pagamentos Mpesa no WooCommerce"
 
 #: wc-mpesa-payment-gateway.php:138
 msgid "API Key"
@@ -35,9 +38,8 @@ msgid "Customer Message"
 msgstr "Descrição para o cliente"
 
 #: wc-mpesa-payment-gateway.php:122
-#| msgid "Mobile M-PESA Payment Gateway"
 msgid "Enable Mpesa payment gateway"
-msgstr "Ativar método de pagamento MPesa"
+msgstr "Activar módulo de pagamentos Mpesa"
 
 #: wc-mpesa-payment-gateway.php:156
 msgid "Enable Test Environment"
@@ -66,7 +68,7 @@ msgstr "Mpesa para WooCommerce"
 
 #: wc-mpesa-payment-gateway.php:193
 msgid "Mpesa number"
-msgstr "Número da conta"
+msgstr "Número de telefone Mpesa"
 
 #: wc-mpesa-payment-gateway.php:245
 msgid "Pay"
@@ -82,7 +84,7 @@ msgstr "Falha no pagamento"
 
 #. Name of the plugin
 msgid "Payment Gateway - Mpesa for WooCommerce"
-msgstr "Payment Gateway - Mpesa para WooCommerce"
+msgstr "Payment Gateway - Mpesa for WooCommerce"
 
 #: wc-mpesa-payment-gateway.php:211
 msgid "Phone number is required!"
@@ -123,4 +125,4 @@ msgstr "TurboHost <suporte@turbohost.co.mz>"
 
 #: wc-mpesa-payment-gateway.php:150
 msgid "Use 171717 for testing"
-msgstr "Use 171717 para Testes"
+msgstr "Use 171717  no ambiente de teste."

@@ -4,9 +4,9 @@ Author URI: http://turbohost.co.mz/
 Plugin URL: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Tags:  mpesa, woocommerce, payment gateway, Vodacom,  Mpesa API Mozambique
 Requires at least: 5.0
-Tested up to: 6.3
-Requires PHP: 7.1
-Stable tag: 1.4.1
+Tested up to: 6.4
+Requires PHP: 7.4
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,7 @@ Por meio do *Mpesa for WooCommerce*, os compradores de sua loja podem comprar pr
 
 ### Pré requisitos
 Para usar o plugin é necessário:
+
 * Ter [WooCommerce](https://wordpress.org/plugins/woocommerce) instalado.
 * Criar uma conta no [portal de desenvolvedores do M-pesa](https://developer.mpesa.vm.co.mz/) onde irá obter as credenciais necessárias para configurar a conta.
 * Solicite ao provedor de hospedagem que abra a conexão de saída no firewall para a porta *18352*. Caso esteja a usar qualquer dos planos de hospedagem da [TurboHost](https://turbohost.co.mz), a porta está aberta por padrão.
@@ -33,6 +34,8 @@ Se tiver  alguma dúvida :
 * Visite a nossa sessão de [Perguntas Frequentes](https://wordpress.org/plugins/wc-m-pesa-payment-gateway/#faq).
 * Crie um tópico no [fórum de ajuda do WordPress](https://wordpress.org/support/plugin/wc-m-pesa-payment-gateway/).
 * Envie uma mensagem no grupo do WhatsApp ["WordPress Moçambique"](https://chat.whatsapp.com/EAxWq4Pljx9KH6Dc2VhxaU).
+
+* Caso pretenda suportar métodos de pagamentos como ponto24 e emola,  instale [paysuite](https://wordpress.org/plugins/paysuite-payment-gateway-for-woocommerce/).
 
 ### Contribuir
 
@@ -87,6 +90,13 @@ Para obter credenciais, crie uma conta em https://developer.mpesa.vm.co.mz/
 Se ao fazer o pedido de pagamento, não recebe nenhuma notificação e da timeout no final, provavelmente é resultado do firewall no servidor que está bloqueando as portas de saída. Solicite ao provedor de hospedagem que abra a conexão de saída para a porta 18352.
 
 == Changelog ==
+
+= 1.5.0 =
+
+* Adicionado suporte para WooCommerce 8.4
+* Melhoria do processo do checkout
+* Correção de bugs
+
 
 = 1.4.1 =
 Adição da compatibilidade com a versão do PHP 8.2
