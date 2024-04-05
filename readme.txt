@@ -6,7 +6,7 @@ Tags:  mpesa, woocommerce, payment gateway, Vodacom,  Mpesa API Mozambique
 Requires at least: 5.0
 Tested up to: 6.4
 Requires PHP: 7.4
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,7 +90,7 @@ Para obter credenciais, crie uma conta em https://developer.mpesa.vm.co.mz/
 Se ao fazer o pedido de pagamento, não recebe nenhuma notificação e da timeout no final, provavelmente é resultado do firewall no servidor que está bloqueando as portas de saída. Solicite ao provedor de hospedagem que abra a conexão de saída para a porta 18352.
 
 == Changelog ==
-= 1.5.2 =
+= 1.5.3 =
 Correção de bug na exibição do logotipo do método de pagamento
 
 = 1.5.0 =
