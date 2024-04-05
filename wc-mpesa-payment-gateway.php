@@ -3,13 +3,13 @@
 Plugin Name: Payment Gateway - Mpesa for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.5.1
+Version: 1.5.2
 WC requires at least: 4.0.0
-WC tested up to: 8.4
+WC tested up to: 8.7
 Author: TurboHost <suporte@turbohost.co.mz>
 Author URI: http://turbohost.co.mz
 
-    Copyright: © 2022 TurboHost <suporte@turbohost.co.mz>.
+    Copyright: © 2024 TurboHost <suporte@turbohost.co.mz>.
     License: GNU General Public License v3.0
     License URI: https://www.gnu.org/licenses/gpl-3.0.html
 */
