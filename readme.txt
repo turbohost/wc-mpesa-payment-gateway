@@ -4,7 +4,7 @@ Author URI: http://turbohost.co.mz/
 Plugin URL: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Tags:  mpesa, woocommerce, payment gateway, Vodacom,  Mpesa API Mozambique
 Requires at least: 5.0
-Tested up to: 6.4
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.6.0
 License: GPLv2 or later
