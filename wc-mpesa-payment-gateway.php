@@ -253,6 +253,11 @@ function wc_mpesa_init()
             $reference_id = $this->generate_reference_id($order_id);
             $number = "258{$number}";
 
+            // C2B waits for the customer to confirm on their phone (~60s). Proxies/nginx may still cut the request earlier.
+            if (function_exists('set_time_limit')) {
+                set_time_limit(90);
+            }
+
             $result =  $mpesa->c2b($order_id, $number, $amount, $reference_id);
             $result = $result->response;
 

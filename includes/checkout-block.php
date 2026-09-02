@@ -24,13 +24,23 @@ final class WC_Mpesa_Blocks extends AbstractPaymentMethodType
             [
                 'wc-blocks-registry',
                 'wc-settings',
+                'wc-blocks-data-store',
                 'wp-element',
                 'wp-html-entities',
                 'wp-i18n',
+                'wp-data',
             ],
             null,
             true
         );
+
+        wp_register_style(
+            'wc-mpesa-blocks-integration',
+            plugin_dir_url(__FILE__) . 'checkout_block.css',
+            [],
+            null
+        );
+        wp_enqueue_style('wc-mpesa-blocks-integration');
 
         if (function_exists('wp_set_script_translations')) {
             wp_set_script_translations('wc-mpesa-blocks-integration', 'wc-mpesa-payment-gateway');
@@ -49,6 +59,7 @@ final class WC_Mpesa_Blocks extends AbstractPaymentMethodType
             'testMode' => 'yes' === $this->get_setting('test', 'yes'),
             'placeholder' => __('ex: 84 123 XXXX', 'wc-mpesa-payment-gateway'),
             'currency' => function_exists('get_woocommerce_currency') ? get_woocommerce_currency() : '',
+            'waitingSeconds' => 60,
         ];
     }
 }
