@@ -3,9 +3,9 @@
 Plugin Name: Payment Gateway - Mpesa for WooCommerce
 Plugin URI: https://wordpress.org/plugins/wc-m-pesa-payment-gateway/
 Description: Receive payments directly to your store through the Vodacom Mozambique M-Pesa.
-Version: 1.5.4
+Version: 1.6.0
 WC requires at least: 4.0.0
-WC tested up to: 8.7
+WC tested up to: 11.0
 Author: TurboHost <suporte@turbohost.co.mz>
 Author URI: http://turbohost.co.mz
 
@@ -16,6 +16,7 @@ Author URI: http://turbohost.co.mz
 require 'vendor/autoload.php';
 
 use Karson\MpesaPhpSdk\Mpesa;
+use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 
 $wc_mpesa_db_version = "1.4.1";
 add_action('plugins_loaded', 'wc_mpesa_init', 0);
@@ -74,7 +75,8 @@ function wc_mpesa_init()
         {
             $this->id                 = 'wc-mpesa-payment-gateway';
             $this->icon               = apply_filters('wc-mpesa_icon', plugins_url('assets/img/m-pesa-logo.png', __FILE__));
-            $this->has_fields         = false;
+            $this->has_fields         = true;
+            $this->supports           = array('products');
             $this->method_title       = __('Mpesa for WooCommerce', 'wc-mpesa-payment-gateway');
             $this->method_description = __('Accept Payments with Mpesa for WooCommerce', 'wc-mpesa-payment-gateway');
 
@@ -203,15 +205,13 @@ function wc_mpesa_init()
                 return false;
             }
             //validate  phone
-            $number = $this->wc_mpesa_validate_number($_POST['wc_mpesa_number']);
+            $posted = $this->get_post_data();
+            $raw_number = isset($posted['wc_mpesa_number']) ? $posted['wc_mpesa_number'] : '';
+            $number = $this->wc_mpesa_validate_number($raw_number);
             if (!$number) {
                 wc_add_notice(__('Phone number is required!', 'wc-mpesa-payment-gateway'), 'error');
                 return false;
             }
-
-            //save phone to use on payment screen
-            session_start();
-            $_SESSION['wc_mpesa_number'] = $number;
 
             return true;
         }
@@ -247,7 +247,8 @@ function wc_mpesa_init()
             if ($this->test != 'yes') {
                 $mpesa->setEnv('live');
             }
-            $number = $this->get_post_data()['wc_mpesa_number'];
+            $posted = $this->get_post_data();
+            $number = isset($posted['wc_mpesa_number']) ? $posted['wc_mpesa_number'] : '';
             $amount = $order->get_total();
             $reference_id = $this->generate_reference_id($order_id);
             $number = "258{$number}";
@@ -271,18 +272,22 @@ function wc_mpesa_init()
                 );
             }
             // Mark as Failed
-            $message = $this->getResponseMessage($result->output_ResponseCode);
+            if (isset($result->output_ResponseCode)) {
+                $message = $this->getResponseMessage($result->output_ResponseCode);
+            }
             if (isset($result->output_error)) {
                 $message = $result->output_error;
             }
-            $order->update_status('failed', __('Payment failed', 'wc-mpesa-payment-gateway'));
-            wc_add_notice($message, 'error');
-            return;
 
+            $order->update_status('failed', __('Payment failed', 'wc-mpesa-payment-gateway'));
+            if (isset($message)) {
+                wc_add_notice($message, 'error');
+            }
+            return;
         }
 
 
-        public function getResponseMessage($error_code)
+        public function getResponseMessage(string $error_code)
         {
             switch ($error_code) {
                 //show detailed error message
@@ -441,11 +446,35 @@ function wc_mpesa_init()
     }
 
     add_filter('woocommerce_payment_gateways', 'woocommerce_add_gateway_mpesa_gateway');
-
 }
 
 add_action('before_woocommerce_init', function () {
     if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
         \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('cart_checkout_blocks', __FILE__, true);
     }
 });
+
+add_action('woocommerce_blocks_loaded', 'wc_mpesa_woocommerce_block_support');
+
+function wc_mpesa_woocommerce_block_support()
+{
+    if (class_exists('Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType')) {
+        require_once dirname(__FILE__) . '/includes/checkout-block.php';
+
+        add_action(
+            'woocommerce_blocks_payment_method_type_registration',
+            function (PaymentMethodRegistry $payment_method_registry) {
+                $container = Automattic\WooCommerce\Blocks\Package::container();
+                $container->register(
+                    WC_Mpesa_Blocks::class,
+                    function () {
+                        return new WC_Mpesa_Blocks();
+                    }
+                );
+                $payment_method_registry->register($container->get(WC_Mpesa_Blocks::class));
+            },
+            5
+        );
+    }
+}
